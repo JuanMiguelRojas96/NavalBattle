@@ -1,5 +1,7 @@
 package NavalBattle;
 
+import NavalBattle.GameZone.WaterZone;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,6 +13,8 @@ import java.awt.*;
 public class NavalBattleGUI extends JFrame {
 
     private Header headerProject;
+    private  GamePanel panelUser, panelCpu;
+
 
     /**
      * Constructor of GUI class
@@ -20,12 +24,14 @@ public class NavalBattleGUI extends JFrame {
 
         //Default JFrame configuration
         this.setTitle("The Title app");
-        this.setSize(200,100);
-        //this.pack();
+        /*this.setSize(200,100);*/
+        this.pack();
         this.setResizable(true);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
     }
 
     /**
@@ -34,11 +40,22 @@ public class NavalBattleGUI extends JFrame {
      */
     private void initGUI() {
         //Set up JFrame Container's Layout
+        /*this.getContentPane().setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();*/
+
         //Create Listener Object and Control Object
         //Set up JComponents
-        headerProject = new Header("Header ...", Color.BLACK);
+        //headerProject = new Header("Header ...", Color.BLACK);
 
-        this.add(headerProject,BorderLayout.NORTH); //Change this line if you change JFrame Container's Layout
+        //this.add(headerProject,BorderLayout.NORTH); //Change this line if you change JFrame Container's Layout
+        panelUser = new GamePanel(2,2);
+        panelUser.setPreferredSize(new Dimension(600,300));
+        /*gbc.gridx = 0;
+        gbc.gridy = 0;*/
+        this.add(panelUser);
+
+
+
     }
 
     /**
