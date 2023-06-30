@@ -5,26 +5,37 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+
+
 public class GamePanel extends JPanel {
 
-    private ArrayList <WaterZone> waterZones;
+    private WaterZone[][] waterZones;
 
 
+    public GamePanel(int height, int width) {
+        this.setPreferredSize(new Dimension(width*50,height*50));
 
-    public  GamePanel(int height, int width) {
-        waterZones = new ArrayList<>();
-        setLayout(new  GridBagLayout());
+        setLayout(new GridBagLayout());
+        waterZones = new WaterZone[height][width];
+
         GridBagConstraints gbc = new GridBagConstraints();
-        for(int row = 0;row< height; row++ ){
-            for(int column = 0;column<width;column++){
+
+
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
+                WaterZone waterZone = new WaterZone();
+                waterZones[row][column] = waterZone;
+                waterZones[row][column].setName(""+row+","+column);
+
                 gbc.gridx = column;
                 gbc.gridy = row;
+                gbc.fill = GridBagConstraints.BOTH;
+                gbc.weightx = 1.0;
+                gbc.weighty = 1.0;
 
-                waterZones.add(new WaterZone());
-                add(waterZones.get(column),gbc);
+                add(waterZones[row][column], gbc);
 
             }
         }
-
     }
 }
