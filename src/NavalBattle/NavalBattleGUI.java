@@ -59,7 +59,7 @@ public class NavalBattleGUI extends JFrame {
         gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
-        this.add(headerProject,gbc);
+        //this.add(headerProject,gbc);
 
         panelUser = new GamePanel(10,10);
         panelUser.setBorder(BorderFactory.createTitledBorder(null ,"PANEL USUARIO", TitledBorder.CENTER,
@@ -68,7 +68,7 @@ public class NavalBattleGUI extends JFrame {
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        this.add(panelUser,gbc);
+        //this.add(panelUser,gbc);
 
 
 
@@ -79,7 +79,7 @@ public class NavalBattleGUI extends JFrame {
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        this.add(panelCpu,gbc);
+        //this.add(panelCpu,gbc);
 
 
 
