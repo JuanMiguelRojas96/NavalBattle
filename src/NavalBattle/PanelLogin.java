@@ -7,23 +7,25 @@ import java.awt.event.ActionListener;
 
 public class PanelLogin extends JPanel {
   private String username;
-  private JTextField usertext;
+  private JTextField userText;
   private JLabel textLabel;
   private JButton login;
   private Escucha escucha;
+  private NavalBattleGUI navalBattleGUI;
 
 
-  public PanelLogin(){
+  public PanelLogin(NavalBattleGUI navalBattleGUI){
+    this.navalBattleGUI = navalBattleGUI;
     this.setPreferredSize(new Dimension(300,150));
     this.setLayout(new GridBagLayout());
     this.setVisible(true);
     this.setBackground(new Color(29, 157, 203));
     this.setBorder(BorderFactory.createLineBorder(new Color(5, 102, 134),5));
     GridBagConstraints gbc = new GridBagConstraints();
-
     escucha = new Escucha();
 
-    textLabel = new JLabel("Ingresa tu Nombre, Capitán");
+    textLabel = new JLabel("Ingresa Tu Nombre, Capitán");
+    textLabel.setFont(new Font("Matura MT Script Capitals",Font.BOLD,18));
     gbc.gridx = 0;
     gbc.gridy = 0;
     gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -31,18 +33,20 @@ public class PanelLogin extends JPanel {
     this.add(textLabel,gbc);
 
 
-    usertext = new JTextField(10);
-    usertext.setPreferredSize(new Dimension(150,50));
-    usertext.setBackground(new Color(1,130,180));
-    usertext.setBorder(BorderFactory.createLineBorder(new Color(29, 157, 203),10));
-    usertext.setFont(new Font("Pirata One",Font.BOLD,15));
+    userText = new JTextField(10);
+    userText.setHorizontalAlignment(SwingConstants.CENTER);
+    userText.setPreferredSize(new Dimension(150,50));
+    userText.setBackground(new Color(1,130,180));
+    userText.setBorder(BorderFactory.createLineBorder(new Color(29, 157, 203),10));
+    userText.setFont(new Font("Matura MT Script Capitals",Font.BOLD,18));
     gbc.gridx = 0;
     gbc.gridy = 1;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.anchor = GridBagConstraints.CENTER;
-    this.add(usertext,gbc);
+    this.add(userText,gbc);
 
     login = new JButton("!A Luchar¡");
+    login.setFont(new Font("Matura MT Script Capitals",Font.BOLD,18));
     login.setBackground(new Color(170, 183, 197));
     login.addActionListener(escucha);
     gbc.gridx = 0;
@@ -56,9 +60,12 @@ public class PanelLogin extends JPanel {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      if (e.getSource() == login){
-       username = usertext.getText();
+      if (e.getSource() == login && !userText.getText().trim().isEmpty()){
+       username = userText.getText();
        setVisible(false);
+       navalBattleGUI.getComponentesVisibles();
+      }else{
+        JOptionPane.showMessageDialog(null,"Ingrese un Usuario Válido","Usuario Inválido",JOptionPane.INFORMATION_MESSAGE);
       }
     }
   }
