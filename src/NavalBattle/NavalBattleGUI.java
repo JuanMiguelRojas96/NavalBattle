@@ -15,6 +15,7 @@ public class NavalBattleGUI extends JFrame {
 
     private Header headerProject;
     private  GamePanel panelUser, panelCpu;
+    private PanelLogin panelLogin;
 
 
     /**
@@ -25,12 +26,11 @@ public class NavalBattleGUI extends JFrame {
 
         //Default JFrame configuration
         this.setTitle("The Title app");
-        //this.setSize(1000,1000);
-        this.pack();
-
+        this.setSize(1020,580);
         this.setResizable(true);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(new Color(1,138,180));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
@@ -52,7 +52,11 @@ public class NavalBattleGUI extends JFrame {
 
           //Change this line if you change JFrame Container's Layout
 
+        panelLogin = new PanelLogin();
+        this.add(panelLogin);
+
         headerProject = new Header("Naval",Color.BLACK);
+        //headerProject.setVisible(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -62,6 +66,7 @@ public class NavalBattleGUI extends JFrame {
         this.add(headerProject,gbc);
 
         panelUser = new GamePanel(10,10);
+        //panelUser.setVisible(false);
         panelUser.setBorder(BorderFactory.createTitledBorder(null ,"PANEL USUARIO", TitledBorder.CENTER,
                 TitledBorder.DEFAULT_JUSTIFICATION , new Font("Stencil",Font.PLAIN+Font.BOLD,20),Color.BLACK));
         gbc.gridx =0;
@@ -73,6 +78,7 @@ public class NavalBattleGUI extends JFrame {
 
 
         panelCpu = new GamePanel(10,10);
+        panelCpu.setVisible(false);
         panelCpu.setBorder(BorderFactory.createTitledBorder(null ,"PANEL CPU", TitledBorder.CENTER,
                 TitledBorder.DEFAULT_JUSTIFICATION , new Font("Stencil",Font.PLAIN+Font.BOLD,20),Color.BLACK));
         gbc.gridx = 1;
