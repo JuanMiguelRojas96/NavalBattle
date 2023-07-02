@@ -44,19 +44,16 @@ public class NavalBattleGUI extends JFrame {
         //Set up JFrame Container's Layout
         this.getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        //this.getContentPane().setLayout(new FlowLayout());
-
 
         //Create Listener Object and Control Object
+
+
         //Set up JComponents
-
-          //Change this line if you change JFrame Container's Layout
-
-        panelLogin = new PanelLogin();
+        panelLogin = new PanelLogin(this);
         this.add(panelLogin);
 
-        headerProject = new Header("Naval",Color.BLACK);
-        //headerProject.setVisible(false);
+        headerProject = new Header("Header",Color.BLACK);
+        headerProject.setVisible(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -66,7 +63,7 @@ public class NavalBattleGUI extends JFrame {
         this.add(headerProject,gbc);
 
         panelUser = new GamePanel(10,10);
-        //panelUser.setVisible(false);
+        panelUser.setVisible(false);
         panelUser.setBorder(BorderFactory.createTitledBorder(null ,"PANEL USUARIO", TitledBorder.CENTER,
                 TitledBorder.DEFAULT_JUSTIFICATION , new Font("Stencil",Font.PLAIN+Font.BOLD,20),Color.BLACK));
         gbc.gridx =0;
@@ -87,23 +84,19 @@ public class NavalBattleGUI extends JFrame {
         gbc.gridheight = 1;
         this.add(panelCpu,gbc);
 
+    }
 
-
-
-
-
-
-
-
-
-
-
+    public void getComponentesVisibles() {
+        headerProject.setText(panelLogin.getUsername());
+        headerProject.setVisible(true);
+        panelUser.setVisible(true);
+        panelCpu.setVisible(true);
     }
 
     /**
      * Main process of the Java program
      * @param args Object used in order to send input data from command line when
-     *             the program is execute by console.
+     * the program is execute by console.
      */
     public static void main(String[] args){
         EventQueue.invokeLater(() -> {
