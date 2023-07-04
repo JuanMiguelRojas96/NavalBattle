@@ -1,6 +1,5 @@
 package NavalBattle.Login;
 
-import NavalBattle.Header;
 
 import javax.swing.*;
 import java.awt.*;

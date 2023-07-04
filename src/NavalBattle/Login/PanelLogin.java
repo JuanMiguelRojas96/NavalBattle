@@ -86,5 +86,6 @@ public class PanelLogin extends JPanel {
   public ImageIcon getAvatarLogin(){
     return perfilSelectorPanel.getPerfilSeleccionado();
   }
+
 }
 

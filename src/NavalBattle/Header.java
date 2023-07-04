@@ -1,14 +1,14 @@
 package NavalBattle;
 
-import NavalBattle.Login.PerfilSelectorPanel;
+
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Header extends JPanel {
 
-    private String username;
-    private JLabel avatar;
+
+    private JLabel avatar, userName;
 
 
     public Header(Color colorBackground){
@@ -25,6 +25,17 @@ public class Header extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
         this.add(avatar,gbc);
+    }
+    public void  setUserName(String user) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        userName = new JLabel(user);
+        userName.setFont(new Font("Matura MT Script Capitals",Font.BOLD,25));
+        userName.setForeground(Color.WHITE);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.CENTER;
+        this.add(userName,gbc);
     }
 }
 
