@@ -87,7 +87,7 @@ public class NavalBattleGUI extends JFrame {
     }
 
     public void getComponentesVisibles() {
-        headerProject.setImage();
+        headerProject.setImage(panelLogin.getAvatarLogin());
         headerProject.setVisible(true);
         panelUser.setVisible(true);
         panelCpu.setVisible(true);
