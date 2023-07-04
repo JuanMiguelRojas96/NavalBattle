@@ -17,9 +17,9 @@ public class Header extends JPanel {
         this.setOpaque(true);
         this.setLayout(new GridBagLayout());
     }
-    public void setImage(){
+    public void setImage(ImageIcon image){
         GridBagConstraints gbc = new GridBagConstraints();
-        avatar = new JLabel();
+        avatar = new JLabel(image);
         gbc.gridx=0;
         gbc.gridy=0;
         gbc.fill = GridBagConstraints.HORIZONTAL;

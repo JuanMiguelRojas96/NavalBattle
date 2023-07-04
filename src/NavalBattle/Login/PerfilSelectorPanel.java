@@ -4,8 +4,7 @@ import NavalBattle.Header;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class PerfilSelectorPanel extends JPanel {
   private ImageIcon perfilSeleccionado;
@@ -28,14 +27,24 @@ public class PerfilSelectorPanel extends JPanel {
       add(botonesPerfil[i]);
 
       final ImageIcon buttonIcon = (ImageIcon) botonesPerfil[i].getIcon();
-      botonesPerfil[i].addActionListener(new ActionListener() {
+
+      botonesPerfil[i].addMouseListener(new MouseAdapter() {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void mouseClicked(MouseEvent e) {
           perfilSeleccionado = buttonIcon;
+          JButton botonSeleccionado = (JButton) e.getSource();
+          botonSeleccionado.setBackground(new Color(118, 124, 118));
+
+          for (JButton boton : botonesPerfil) {
+            if (boton != botonSeleccionado) {
+              boton.setBackground(new Color(29, 157, 203));
+            }
+          }
         }
       });
     }
   }
+
 
   public ImageIcon getPerfilSeleccionado() {
     return perfilSeleccionado;
