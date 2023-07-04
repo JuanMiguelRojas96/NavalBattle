@@ -10,6 +10,8 @@ public class Header extends JPanel {
     private String username;
     private JLabel avatar;
 
+    private  PerfilSelectorPanel imageAvatar;
+
 
     public Header(Color colorBackground){
         this.setPreferredSize(new Dimension(1018,50));
@@ -19,12 +21,15 @@ public class Header extends JPanel {
     }
     public void setImage(){
         GridBagConstraints gbc = new GridBagConstraints();
-        avatar = new JLabel();
+        imageAvatar = new PerfilSelectorPanel();
+        avatar = new JLabel(new ImageIcon());
         gbc.gridx=0;
         gbc.gridy=0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
         this.add(avatar,gbc);
+        System.out.println(imageAvatar.getPerfilSeleccionado());
+
     }
 }
 

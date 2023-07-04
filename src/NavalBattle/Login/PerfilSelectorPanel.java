@@ -1,7 +1,5 @@
 package NavalBattle.Login;
 
-import NavalBattle.Header;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,6 +30,7 @@ public class PerfilSelectorPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
           perfilSeleccionado = buttonIcon;
+          System.out.println(perfilSeleccionado);
         }
       });
     }
@@ -40,4 +39,5 @@ public class PerfilSelectorPanel extends JPanel {
   public ImageIcon getPerfilSeleccionado() {
     return perfilSeleccionado;
   }
+
 }
