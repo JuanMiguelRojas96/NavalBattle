@@ -71,7 +71,7 @@ public class PanelLogin extends JPanel {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      if (e.getSource() == login && !userText.getText().trim().isEmpty()){
+      if (e.getSource() == login && !userText.getText().trim().isEmpty() && perfilSelectorPanel.getPerfilSeleccionado() != null){
        username = userText.getText();
        setVisible(false);
        navalBattleGUI.getComponentesVisibles();
@@ -83,5 +83,9 @@ public class PanelLogin extends JPanel {
   public String getUsername(){
     return username;
   }
+  public ImageIcon getAvatarLogin(){
+    return perfilSelectorPanel.getPerfilSeleccionado();
+  }
+
 }
 
