@@ -1,6 +1,6 @@
 package NavalBattle;
 
-import NavalBattle.GameZone.WaterZone;
+import NavalBattle.Login.PanelLogin;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -26,7 +26,7 @@ public class NavalBattleGUI extends JFrame {
 
         //Default JFrame configuration
         this.setTitle("The Title app");
-        this.setSize(1020,580);
+        this.setSize(1050,600);
         this.setResizable(true);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
@@ -52,7 +52,7 @@ public class NavalBattleGUI extends JFrame {
         panelLogin = new PanelLogin(this);
         this.add(panelLogin);
 
-        headerProject = new Header("Header",Color.BLACK);
+        headerProject = new Header(Color.BLACK);
         headerProject.setVisible(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -87,7 +87,7 @@ public class NavalBattleGUI extends JFrame {
     }
 
     public void getComponentesVisibles() {
-        headerProject.setText(panelLogin.getUsername());
+        headerProject.setImage();
         headerProject.setVisible(true);
         panelUser.setVisible(true);
         panelCpu.setVisible(true);
