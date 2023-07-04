@@ -1,22 +1,30 @@
 package NavalBattle;
 
+import NavalBattle.Login.PerfilSelectorPanel;
+
 import javax.swing.*;
 import java.awt.*;
 
+public class Header extends JPanel {
 
-public class Header extends JLabel {
-    /**
-     * Constructor of the Header class
-     * @param title String that contains Header text
-     * @param colorBackground Color object to be assigned for the Header background
-     */
-    public Header(String title, Color colorBackground){
-        this.setText(title);
+    private String username;
+    private JLabel avatar;
+
+
+    public Header(Color colorBackground){
+        this.setPreferredSize(new Dimension(1018,50));
         this.setBackground(colorBackground);
-        this.setForeground(new Color(255,255,255));
-        this.setFont(new Font(Font.DIALOG,Font.BOLD,20));
-        this.setHorizontalAlignment(JLabel.CENTER);
-        //this.setVerticalAlignment(JLabel.CENTER);
         this.setOpaque(true);
+        this.setLayout(new GridBagLayout());
+    }
+    public void setImage(){
+        GridBagConstraints gbc = new GridBagConstraints();
+        avatar = new JLabel();
+        gbc.gridx=0;
+        gbc.gridy=0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.CENTER;
+        this.add(avatar,gbc);
     }
 }
+
