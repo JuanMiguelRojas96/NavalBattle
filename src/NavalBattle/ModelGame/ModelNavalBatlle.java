@@ -129,8 +129,8 @@ public class ModelNavalBatlle {
             }
 
             for (int i = 0; i < length; i++) {
-                int checkX = posX + i;
-                int checkY = posY + i;
+                int checkX = posX + (orientation == 0 ? i : 0);
+                int checkY = posY + (orientation == 0 ? 0 : i);
                 if (!checkCoordinates(checkX, checkY)) {
                     isValid = false;
                     System.out.println("no se pudo");
