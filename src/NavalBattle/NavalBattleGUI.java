@@ -132,14 +132,18 @@ public class NavalBattleGUI extends JFrame {
                 waterZone.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        handleWaterZoneClick(waterZone);
+                        modelNavalBatlle.handleWaterZoneClick(waterZone);
+                        panelUser.revalidate();
+                        panelUser.repaint();
                     }
                 });
             }
         }
     }
 
-    public void handleWaterZoneClick(WaterZone waterZone) {
+
+    //
+    /*public void handleWaterZoneClick(WaterZone waterZone) {
         String string = waterZone.getName();
         String image = modelNavalBatlle.getImage(string);
         System.out.println(image);
@@ -149,7 +153,7 @@ public class NavalBattleGUI extends JFrame {
         if (waterZone.getName().equals(row + "," + column)) {
             waterZone.setImageIcon(shipIcon);
         }
-    }
+    }*/
 
 
 

@@ -1,7 +1,11 @@
 package NavalBattle.ModelGame;
 
 
+import NavalBattle.GameZone.WaterZone;
+
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class ModelNavalBatlle {
@@ -11,6 +15,8 @@ public class ModelNavalBatlle {
 
     private String[] images = {"/agua.png","/tocado.png"};
 
+    private ArrayList  headdresses;
+
 
     public ShipClass[] getShips() {
         return ships;
@@ -19,6 +25,7 @@ public class ModelNavalBatlle {
     public ModelNavalBatlle(){
 
         ships = new ShipClass[10];
+        headdresses = new ArrayList<>();
 
     }
 
@@ -97,7 +104,6 @@ public class ModelNavalBatlle {
         for (ShipClass ship : ships) {
             if (ship != null) {
                 ArrayList<String> coordinates = ship.getCoordinates();
-                System.out.println(coordinatesSearch);
                 for (String coordinate : coordinates) {
                     if (coordinate.equals(coordinatesSearch)) {
                         System.out.println("se repitio");
@@ -170,6 +176,78 @@ public class ModelNavalBatlle {
         return image;
 
     }
+    public void handleWaterZoneClick(WaterZone waterZone) {
+        String string = waterZone.getName();
+        System.out.println(string);
+        String row = String.valueOf(string.charAt(0));
+        String column = String.valueOf(string.charAt(2));
+        headdresses.add(row + column);
+        String image = getImage(string);
+        ShipClass ship = checkSunken(string);
+
+        if (ship != null) {
+            ArrayList<ArrayList<String>> coordinatesSunken = getCoordinatesSunken(ship);
+
+            if (coordinatesSunken != null) {
+                for (int i = 0; i < ship.getSize(); i++) {
+                    ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/hundido.png"));
+
+                    if (ship.getOrientation().equals("V")) {
+                        if (waterZone.getName().equals((ship.getcoordinateX() + i) + "," + ship.getcoordinateY())) {
+                            waterZone.setImageIcon(shipIcon);
+                        }
+                    } else {
+                        if (waterZone.getName().equals(ship.getcoordinateX() + "," + (ship.getcoordinateY() + i))) {
+                            waterZone.setImageIcon(shipIcon);
+                        }
+                    }
+                }
+            } else {
+                ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
+                if (waterZone.getName().equals(row + "," + column)) {
+                    waterZone.setImageIcon(shipIcon);
+                }
+            }
+        } else {
+            ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
+            if (waterZone.getName().equals(row + "," + column)) {
+                waterZone.setImageIcon(shipIcon);
+            }
+        }
+    }
+
+
+    public ShipClass checkSunken(String string){
+        String row = String.valueOf(string.charAt(0));
+        String column = String.valueOf(string.charAt(2));
+        String coordinatesSearch = "" + row + "" + column;
+        for (ShipClass ship : ships) {
+            if (ship != null) {
+                ArrayList<String> coordinates = ship.getCoordinates();
+                for (String coordinate : coordinates) {
+                    if (coordinate.equals(coordinatesSearch)) {
+                        /*System.out.println("se repitio");
+                        System.out.println(ship);*/
+                        return ship;
+                    }
+                }
+            }
+        } return null;
+    }
+
+    public ArrayList<ArrayList<String>> getCoordinatesSunken(ShipClass ship) {
+        ArrayList coordinates = ship.getCoordinates();
+        boolean sunken = headdresses.containsAll(coordinates);
+        System.out.println(headdresses);
+        System.out.println(coordinates);
+        System.out.println(sunken);
+        if (sunken) {
+            return coordinates;
+        }
+
+        return null;
+    }
+
 
 
 
