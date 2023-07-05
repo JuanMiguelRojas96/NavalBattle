@@ -8,8 +8,7 @@ import NavalBattle.ModelGame.ShipClass;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 /**
  * This class is used for ...
@@ -119,11 +118,40 @@ public class NavalBattleGUI extends JFrame {
         panelCpu.setVisible(true);
     }
 
-    public void print(){
+    /*public void print(){
         modelNavalBatlle.generateShips();
         modelNavalBatlle.getShips();
 
+    }*/
+
+    public void clickWaterZone() {
+        Component[] components = panelUser.getComponents();
+        for (Component component : components) {
+            if (component instanceof WaterZone) {
+                WaterZone waterZone = (WaterZone) component;
+                waterZone.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        handleWaterZoneClick(waterZone);
+                    }
+                });
+            }
+        }
     }
+
+    public void handleWaterZoneClick(WaterZone waterZone) {
+        String string = waterZone.getName();
+        String image = modelNavalBatlle.getImage(string);
+        System.out.println(image);
+        ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
+        String row = String.valueOf(string.charAt(0));
+        String column = String.valueOf(string.charAt(2));
+        if (waterZone.getName().equals(row + "," + column)) {
+            waterZone.setImageIcon(shipIcon);
+        }
+    }
+
+
 
     public void play() {
         modelNavalBatlle.generateShips();
@@ -132,6 +160,7 @@ public class NavalBattleGUI extends JFrame {
         modelNavalBatlle.imprimirShips();
         /*System.out.println(ships);
         System.out.println(components);*/
+        clickWaterZone();
 
         for (Component component : components) {
             if (component instanceof WaterZone) {
@@ -179,13 +208,38 @@ public class NavalBattleGUI extends JFrame {
     /**
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
-    private class Escucha  implements ActionListener {
+    private class Escucha  implements ActionListener, MouseListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource()==play){
                 play();
             }
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
         }
     }
 }

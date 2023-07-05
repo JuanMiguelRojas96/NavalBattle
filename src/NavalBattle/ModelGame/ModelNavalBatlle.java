@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ModelNavalBatlle {
-    private  ShipClass aircraftCarrier,aircraftCarrier2,aircraftCarrier3,
-            bombardier,submarine,submarine2,frigate,frigate2,frigate3,frigate4;
+    private  ShipClass aircraftCarrier,bombardier,
+            bombardier2,bombardier3, submarine,submarine2,frigate,frigate2,frigate3,frigate4;
     private ShipClass[] ships;
+
+    private String[] images = {"/agua.png","/tocado.png"};
 
 
     public ShipClass[] getShips() {
@@ -23,29 +25,31 @@ public class ModelNavalBatlle {
     public void generateShips(){
 
 
-        aircraftCarrier = new ShipClass(2, "aircraftCarrier");
-        aircraftCarrier2 = new ShipClass(2, "aircraftCarrier");
-        aircraftCarrier3 = new ShipClass(2, "aircraftCarrier");
+        aircraftCarrier = new ShipClass(4, "aircraftCarrier");
 
-        bombardier = new ShipClass(4,"bombardier");
 
         submarine = new ShipClass(3,"submarine");
         submarine2 = new ShipClass(3,"submarine");
+
+        bombardier = new ShipClass(2,"bombardier");
+        bombardier2 = new ShipClass(2,"bombardier");
+        bombardier3 = new ShipClass(2,"bombardier");
+
 
         frigate = new ShipClass(1,"frigate");
         frigate2 = new ShipClass(1,"frigate");
         frigate3 = new ShipClass(1,"frigate");
         frigate4 = new ShipClass(1,"frigate");
 
-        ships[0] = aircraftCarrier;
-        ships[1] = aircraftCarrier2;
-        ships[2] = aircraftCarrier3;
 
+        ships[0] = aircraftCarrier;
+
+        ships[1] = submarine;
+        ships[2] = submarine2;
 
         ships[3] = bombardier;
-
-        ships[4] = submarine;
-        ships[5] = submarine2;
+        ships[4] = bombardier2;
+        ships[5] = bombardier3;
 
         ships[6] = frigate;
         ships[7] = frigate2;
@@ -54,13 +58,14 @@ public class ModelNavalBatlle {
 
 
         generateCoordinates( aircraftCarrier);
-        generateCoordinates( aircraftCarrier2);
-        generateCoordinates( aircraftCarrier3);
+        generateCoordinates( submarine);
+        generateCoordinates( submarine2);
 
         generateCoordinates( bombardier);
 
         generateCoordinates( submarine);
-        generateCoordinates( submarine2);
+        generateCoordinates( bombardier2);
+        generateCoordinates( bombardier3);
 
         generateCoordinates( frigate);
         generateCoordinates( frigate2);
@@ -93,8 +98,8 @@ public class ModelNavalBatlle {
             if (ship != null) {
                 ArrayList<String> coordinates = ship.getCoordinates();
                 System.out.println(coordinatesSearch);
-                for (String coordinate : coordinates) { // Corrección: Especificar el tipo de datos para la variable `coordinate`
-                    if (coordinate.equals(coordinatesSearch)) {// Corrección: Usar el método equals() para comparar cadenas
+                for (String coordinate : coordinates) {
+                    if (coordinate.equals(coordinatesSearch)) {
                         System.out.println("se repitio");
                         System.out.println(coordinate);
                         return false;
@@ -149,6 +154,23 @@ public class ModelNavalBatlle {
             ship.setcoordinates(setX, setY);
         }
     }
+    public String getImage(String coordinate) {
+        int row = Integer.parseInt(String.valueOf(coordinate.charAt(0)));
+        int column = Integer.parseInt(String.valueOf(coordinate.charAt(2)));
+
+        String image;
+
+        if (!checkCoordinates(row, column)) {
+
+            image = images[1];
+        }
+        else{
+            image = images[0];
+        }
+        return image;
+
+    }
+
 
 
 
