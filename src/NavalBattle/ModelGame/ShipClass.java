@@ -1,11 +1,32 @@
 package NavalBattle.ModelGame;
 
+import java.util.ArrayList;
+
 public class ShipClass {
     private int size;
     private int coordinateX;
 
     private int coordinateY;
 
+    private String orientation;
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    ArrayList<String> coordinates = new ArrayList<>();
+
+    public void setcoordinates(int row, int column){
+        coordinates.add(""+row+""+column);
+    }
+
+    public ArrayList<String> getCoordinates() {
+        return coordinates;
+    }
 
     private String typeShip;
 
@@ -33,7 +54,6 @@ public class ShipClass {
     public void setcoordinateY(int coordinateY) {
         this.coordinateY = coordinateY;
     }
-
 
 
     public int getcoordinateX() {

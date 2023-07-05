@@ -129,8 +129,9 @@ public class NavalBattleGUI extends JFrame {
         modelNavalBatlle.generateShips();
         ships = modelNavalBatlle.getShips();
         Component[] components = panelUser.getComponents();
-        System.out.println(ships);
-        System.out.println(components);
+        modelNavalBatlle.imprimirShips();
+        /*System.out.println(ships);
+        System.out.println(components);*/
 
         for (Component component : components) {
             if (component instanceof WaterZone) {
@@ -138,19 +139,26 @@ public class NavalBattleGUI extends JFrame {
 
                 for (ShipClass ship : ships) {
                     if (ship != null) {
-                        for(int i = 0;i<ship.getSize();i++){
-                            System.out.println(ship.getTypeShip());
+                        for (int i = 0; i < ship.getSize(); i++) {
                             ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" +
-                                    ship.getTypeShip()+"/"+(i + 1)+".png"));
-                            if(waterZone.getName().equals(ship.getcoordinateX()+","+(ship.getcoordinateY()+i))){
-                                waterZone.setImageIcon(shipIcon);
+                                    ship.getTypeShip()+ship.getOrientation() + "/" + (i + 1) + ".png"));
+                            if(ship.getOrientation()== "H"){
+                                if (waterZone.getName().equals(ship.getcoordinateX() + "," + (ship.getcoordinateY() + i))) {
+                                    waterZone.setImageIcon(shipIcon);
+                                }
+                            }else{
+                                if (waterZone.getName().equals((ship.getcoordinateX() +i) + "," + ship.getcoordinateY())) {
+                                    waterZone.setImageIcon(shipIcon);
+                                }
                             }
+
 
                         }
                     }
                 }
             }
         }
+
         panelUser.revalidate();
         panelUser.repaint();
         System.out.println("funciono");
