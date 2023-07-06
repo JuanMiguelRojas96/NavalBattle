@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * This class is used for ...
@@ -118,11 +119,7 @@ public class NavalBattleGUI extends JFrame {
         panelCpu.setVisible(true);
     }
 
-    /*public void print(){
-        modelNavalBatlle.generateShips();
-        modelNavalBatlle.getShips();
 
-    }*/
 
     public void clickWaterZone() {
         Component[] components = panelUser.getComponents();
@@ -132,9 +129,12 @@ public class NavalBattleGUI extends JFrame {
                 waterZone.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        modelNavalBatlle.handleWaterZoneClick(waterZone);
-                        panelUser.revalidate();
-                        panelUser.repaint();
+                        ShipClass ship = modelNavalBatlle.handleWaterZoneClick(waterZone);
+                        if(ship!=null){
+                            setSonken(ship);
+                        }
+
+
                     }
                 });
             }
@@ -155,7 +155,31 @@ public class NavalBattleGUI extends JFrame {
         }
     }*/
 
+    public void setSonken(ShipClass ship) {
+        Component[] components = panelUser.getComponents();
+        for (Component component : components) {
+            if (component instanceof WaterZone) {
+                WaterZone waterZone = (WaterZone) component;
 
+                ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/hundido.png"));
+
+                for (int i = 0; i < ship.getSize(); i++) {
+
+                    if(ship.getOrientation()== "H"){
+                        if (waterZone.getName().equals(ship.getcoordinateX() + "," + (ship.getcoordinateY() + i))) {
+                            waterZone.setImageIcon(imageIcon);
+                        }
+                    }else{
+                        if (waterZone.getName().equals((ship.getcoordinateX() +i) + "," + ship.getcoordinateY())) {
+                            waterZone.setImageIcon(imageIcon);
+                        }
+                    }
+
+
+                }
+            }
+        }
+    }
 
     public void play() {
         modelNavalBatlle.generateShips();
@@ -192,9 +216,9 @@ public class NavalBattleGUI extends JFrame {
             }
         }
 
-        panelUser.revalidate();
+        /*panelUser.revalidate();
         panelUser.repaint();
-        System.out.println("funciono");
+        System.out.println("funciono");*/
     }
 
 

@@ -5,7 +5,6 @@ import NavalBattle.GameZone.WaterZone;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 public class ModelNavalBatlle {
@@ -176,7 +175,7 @@ public class ModelNavalBatlle {
         return image;
 
     }
-    public void handleWaterZoneClick(WaterZone waterZone) {
+    public ShipClass handleWaterZoneClick(WaterZone waterZone) {
         String string = waterZone.getName();
         System.out.println(string);
         String row = String.valueOf(string.charAt(0));
@@ -186,34 +185,29 @@ public class ModelNavalBatlle {
         ShipClass ship = checkSunken(string);
 
         if (ship != null) {
-            ArrayList<ArrayList<String>> coordinatesSunken = getCoordinatesSunken(ship);
+            ShipClass shipTrue = getCoordinatesSunken(ship);
 
-            if (coordinatesSunken != null) {
-                for (int i = 0; i < ship.getSize(); i++) {
-                    ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/hundido.png"));
+            if (shipTrue != null) {
 
-                    if (ship.getOrientation().equals("V")) {
-                        if (waterZone.getName().equals((ship.getcoordinateX() + i) + "," + ship.getcoordinateY())) {
-                            waterZone.setImageIcon(shipIcon);
-                        }
-                    } else {
-                        if (waterZone.getName().equals(ship.getcoordinateX() + "," + (ship.getcoordinateY() + i))) {
-                            waterZone.setImageIcon(shipIcon);
-                        }
-                    }
-                }
+
+                return shipTrue;
+
             } else {
                 ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
                 if (waterZone.getName().equals(row + "," + column)) {
                     waterZone.setImageIcon(shipIcon);
+                    return null;
+
                 }
             }
         } else {
             ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
             if (waterZone.getName().equals(row + "," + column)) {
                 waterZone.setImageIcon(shipIcon);
+                return null;
             }
         }
+        return null;
     }
 
 
@@ -235,14 +229,14 @@ public class ModelNavalBatlle {
         } return null;
     }
 
-    public ArrayList<ArrayList<String>> getCoordinatesSunken(ShipClass ship) {
+    public ShipClass getCoordinatesSunken(ShipClass ship) {
         ArrayList coordinates = ship.getCoordinates();
         boolean sunken = headdresses.containsAll(coordinates);
-        System.out.println(headdresses);
+        /*System.out.println(headdresses);
         System.out.println(coordinates);
-        System.out.println(sunken);
+        System.out.println(sunken)*/;
         if (sunken) {
-            return coordinates;
+            return ship;
         }
 
         return null;
