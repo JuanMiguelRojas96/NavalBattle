@@ -1,10 +1,15 @@
 package NavalBattle;
 
+import NavalBattle.GameZone.WaterZone;
 import NavalBattle.Login.PanelLogin;
+import NavalBattle.ModelGame.ModelNavalBatlle;
+import NavalBattle.ModelGame.ShipClass;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * This class is used for ...
@@ -16,6 +21,14 @@ public class NavalBattleGUI extends JFrame {
     private Header headerProject;
     private  GamePanel panelUser, panelCpu;
     private PanelLogin panelLogin;
+
+    private ModelNavalBatlle modelNavalBatlle;
+
+    private ShipClass[] ships;
+    private  JButton play;
+    private  Escucha escucha;
+
+
 
 
     /**
@@ -44,6 +57,9 @@ public class NavalBattleGUI extends JFrame {
         //Set up JFrame Container's Layout
         this.getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        escucha = new Escucha();
+        modelNavalBatlle = new ModelNavalBatlle();
+        ships = new ShipClass[2];
 
         //Create Listener Object and Control Object
 
@@ -84,6 +100,15 @@ public class NavalBattleGUI extends JFrame {
         gbc.gridheight = 1;
         this.add(panelCpu,gbc);
 
+        play = new JButton("play");
+        play.addActionListener(escucha);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.CENTER;
+        this.add(play,gbc);
+
     }
 
     public void getComponentesVisibles() {
@@ -93,6 +118,109 @@ public class NavalBattleGUI extends JFrame {
         panelUser.setVisible(true);
         panelCpu.setVisible(true);
     }
+
+
+
+    public void clickWaterZone() {
+        Component[] components = panelUser.getComponents();
+        for (Component component : components) {
+            if (component instanceof WaterZone) {
+                WaterZone waterZone = (WaterZone) component;
+                waterZone.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        ShipClass ship = modelNavalBatlle.handleWaterZoneClick(waterZone);
+                        if(ship!=null){
+                            setSonken(ship);
+                        }
+
+
+                    }
+                });
+            }
+        }
+    }
+
+
+    //
+    /*public void handleWaterZoneClick(WaterZone waterZone) {
+        String string = waterZone.getName();
+        String image = modelNavalBatlle.getImage(string);
+        System.out.println(image);
+        ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
+        String row = String.valueOf(string.charAt(0));
+        String column = String.valueOf(string.charAt(2));
+        if (waterZone.getName().equals(row + "," + column)) {
+            waterZone.setImageIcon(shipIcon);
+        }
+    }*/
+
+    public void setSonken(ShipClass ship) {
+        Component[] components = panelUser.getComponents();
+        for (Component component : components) {
+            if (component instanceof WaterZone) {
+                WaterZone waterZone = (WaterZone) component;
+
+                ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/hundido.png"));
+
+                for (int i = 0; i < ship.getSize(); i++) {
+
+                    if(ship.getOrientation()== "H"){
+                        if (waterZone.getName().equals(ship.getcoordinateX() + "," + (ship.getcoordinateY() + i))) {
+                            waterZone.setImageIcon(imageIcon);
+                        }
+                    }else{
+                        if (waterZone.getName().equals((ship.getcoordinateX() +i) + "," + ship.getcoordinateY())) {
+                            waterZone.setImageIcon(imageIcon);
+                        }
+                    }
+
+
+                }
+            }
+        }
+    }
+
+    public void play() {
+        modelNavalBatlle.generateShips();
+        ships = modelNavalBatlle.getShips();
+        Component[] components = panelUser.getComponents();
+        modelNavalBatlle.imprimirShips();
+        /*System.out.println(ships);
+        System.out.println(components);*/
+        clickWaterZone();
+
+        for (Component component : components) {
+            if (component instanceof WaterZone) {
+                WaterZone waterZone = (WaterZone) component;
+
+                for (ShipClass ship : ships) {
+                    if (ship != null) {
+                        for (int i = 0; i < ship.getSize(); i++) {
+                            ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" +
+                                    ship.getTypeShip()+ship.getOrientation() + "/" + (i + 1) + ".png"));
+                            if(ship.getOrientation()== "H"){
+                                if (waterZone.getName().equals(ship.getcoordinateX() + "," + (ship.getcoordinateY() + i))) {
+                                    waterZone.setImageIcon(shipIcon);
+                                }
+                            }else{
+                                if (waterZone.getName().equals((ship.getcoordinateX() +i) + "," + ship.getcoordinateY())) {
+                                    waterZone.setImageIcon(shipIcon);
+                                }
+                            }
+
+
+                        }
+                    }
+                }
+            }
+        }
+
+        /*panelUser.revalidate();
+        panelUser.repaint();
+        System.out.println("funciono");*/
+    }
+
 
     /**
      * Main process of the Java program
@@ -108,7 +236,38 @@ public class NavalBattleGUI extends JFrame {
     /**
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
-    private class Escucha {
+    private class Escucha  implements ActionListener, MouseListener {
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource()==play){
+                play();
+            }
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
     }
 }

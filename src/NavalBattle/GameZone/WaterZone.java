@@ -9,6 +9,10 @@ public class WaterZone extends  JLabel {
         this.water = new ImageIcon(getClass().getResource("/resources/water.png")).getImage();
 
     }
+    public void setImageIcon(ImageIcon icon) {
+        this.water = icon.getImage();
+        repaint();
+    }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         g.drawImage(water, 0,0,getWidth(),getHeight(),this);
