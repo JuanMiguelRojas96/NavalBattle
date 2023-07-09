@@ -5,122 +5,111 @@ import NavalBattle.GameZone.WaterZone;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class ModelNavalBatlle {
-    private  ShipClass aircraftCarrier,bombardier,
-            bombardier2,bombardier3, submarine,submarine2,frigate,frigate2,frigate3,frigate4;
-    private ShipClass[] ships;
+
+    private ShipClass[] shipsCpu,shipsUser;
 
     private String[] images;
 
-    private ArrayList  headdresses;
+    private Integer turno;
+
+    private ArrayList hitsCpu,hitsUser;
 
 
 
 
     public ModelNavalBatlle(){
 
-        ships = new ShipClass[10];
+        shipsCpu = new ShipClass[10];
+        shipsUser = new ShipClass[10];
 
-        headdresses = new ArrayList<>();
+
+        hitsCpu = new ArrayList<>();
         images  = new String[]{"/agua.png", "/tocado.png"};
+        //o turno usuario, 1 turno cpu
+        turno =  0;
 
     }
 
     public ShipClass[] getShips() {
-        return ships;
+        return shipsUser;
     }
 
     public void generateShips(){
 
-
-        aircraftCarrier = new ShipClass(4, "aircraftCarrier");
-
-
-        submarine = new ShipClass(3,"submarine");
-        submarine2 = new ShipClass(3,"submarine");
-
-        bombardier = new ShipClass(2,"bombardier");
-        bombardier2 = new ShipClass(2,"bombardier");
-        bombardier3 = new ShipClass(2,"bombardier");
+        String cpu = "cpu";
+        String user = "user";
 
 
-        frigate = new ShipClass(1,"frigate");
-        frigate2 = new ShipClass(1,"frigate");
-        frigate3 = new ShipClass(1,"frigate");
-        frigate4 = new ShipClass(1,"frigate");
+        String[] shipNames = { "aircraftCarrier", "submarine", "submarine", "bombardier", "bombardier",
+                "bombardier", "frigate", "frigate", "frigate", "frigate" };
 
+        for (int i = 0; i < shipNames.length; i++) {
+            int  size = 0;
+            if(shipNames[i]=="aircraftCarrier"){
+                size = 4;
+            }
+            else if(shipNames[i]=="submarine"){
+                size = 3;
+            }
+            else if(shipNames[i]=="bombardier"){
+                size =2;
+            }
+            else {
+                size =1;
+            }
+            ShipClass ship = new ShipClass(size, shipNames[i]);
+            generateCoordinates(ship,cpu);
 
-        ships[0] = aircraftCarrier;
+            shipsCpu[i] = ship;
 
-        ships[1] = submarine;
-        ships[2] = submarine2;
+            ShipClass userShip = new ShipClass(size, shipNames[i]);
+            generateCoordinates(userShip,user);
 
-        ships[3] = bombardier;
-        ships[4] = bombardier2;
-        ships[5] = bombardier3;
-
-        ships[6] = frigate;
-        ships[7] = frigate2;
-        ships[8] = frigate3;
-        ships[9] = frigate4;
-
-
-        generateCoordinates( aircraftCarrier);
-
-        generateCoordinates( submarine);
-        generateCoordinates( submarine2);
-
-        generateCoordinates( bombardier);
-
-
-        generateCoordinates( bombardier2);
-        generateCoordinates( bombardier3);
-
-        generateCoordinates( frigate);
-        generateCoordinates( frigate2);
-        generateCoordinates( frigate3);
-        generateCoordinates( frigate4);
-
-
-
-
-
+            shipsUser[i] = userShip;
+        }
     }
 
-    /*public void imprimirShips() {
-        for (int i = 0; i < ships.length; i++) {
-            if (ships[i] != null) {
+
+
+
+
+
+
+    public void imprimirShips() {
+        for (int i = 0; i < shipsCpu.length; i++) {
+            if (shipsCpu[i] != null) {
                 System.out.println("Barco " + (i+1) + ":");
-                System.out.println("Nombre: " + ships[i].getTypeShip());
-                System.out.println("Longitud: " + ships[i].getSize());
-                System.out.println("Posición X: " + ships[i].getcoordinateX());
-                System.out.println("Posición Y: " + ships[i].getcoordinateY());
-                System.out.println("coordenadas Y: " + ships[i].getCoordinates());
-                System.out.println("orienatcion : " + ships[i].getOrientation());
+                System.out.println("Nombre: " + shipsCpu[i].getTypeShip());
+                System.out.println("Longitud: " + shipsCpu[i].getSize());
+                System.out.println("Posición X: " + shipsUser[i].getcoordinateX());
+                System.out.println("Posición Y: " + shipsCpu[i].getcoordinateY());
+                System.out.println("coordenadas Y: " + shipsCpu[i].getCoordinates());
+                System.out.println("orienatcion : " + shipsCpu[i].getOrientation());
                 System.out.println();
             }
         }
-    }*/
-    private boolean checkCoordinates(int fila, int column) {
+    }
+    private boolean checkCoordinates(int fila, int column, String typeShip) {
         String coordinatesSearch = "" + fila + "" + column;
+
+        ShipClass[] ships = (typeShip.equals("cpu")) ? shipsCpu : shipsUser;
+
         for (ShipClass ship : ships) {
-            if (ship != null) {
-                ArrayList<String> coordinates = ship.getCoordinates();
-                for (String coordinate : coordinates) {
-                    if (coordinate.equals(coordinatesSearch)) {
-                       /* System.out.println("se repitio");
-                        System.out.println(coordinate);*/
-                        return false;
-                    }
-                }
+            if (ship != null && ship.getCoordinates().contains(coordinatesSearch)) {
+                return false;
             }
         }
+
         return true;
     }
 
-    private void generateCoordinates(ShipClass ship) {
+
+    private void generateCoordinates(ShipClass ship,String typeShip) {
         Random random = new Random();
         int length = ship.getSize();
         int maxX = 11 - length;
@@ -146,7 +135,7 @@ public class ModelNavalBatlle {
             for (int i = 0; i < length; i++) {
                 int checkX = posX + (orientation == 0 ? i : 0);
                 int checkY = posY + (orientation == 0 ? 0 : i);
-                if (!checkCoordinates(checkX, checkY)) {
+                if (!checkCoordinates(checkX, checkY,typeShip)) {
                     isValid = false;
                     System.out.println("no se pudo");
                     break;
@@ -164,13 +153,13 @@ public class ModelNavalBatlle {
             ship.setcoordinates(setX, setY);
         }
     }
-    public String getImage(String coordinate) {
+    public String getImage(String coordinate,String typeShip) {
         int row = Integer.parseInt(String.valueOf(coordinate.charAt(0)));
         int column = Integer.parseInt(String.valueOf(coordinate.charAt(2)));
 
         String image;
 
-        if (!checkCoordinates(row, column)) {
+        if (!checkCoordinates(row, column,typeShip)) {
 
             image = images[1];
         }
@@ -181,74 +170,79 @@ public class ModelNavalBatlle {
 
     }
     public ShipClass handleWaterZoneClick(WaterZone waterZone) {
-        String string = waterZone.getName();
-        System.out.println(string);
-        //verificar jean heyller
-        String row = String.valueOf(string.charAt(0));
-        String column = String.valueOf(string.charAt(2));
-        headdresses.add(row + column);
-        String image = getImage(string);
-        ShipClass ship = checkSunken(string);
+        String zoneName = waterZone.getName();
+        System.out.println(zoneName);
+
+        String row = String.valueOf(zoneName.charAt(0));
+        String column = String.valueOf(zoneName.charAt(2));
+
+        hitsCpu.add(row + column);
+
+        String image = getImage(zoneName, (turno == 0) ? "cpu" : "user");
+
+        ShipClass ship = checkSunken(zoneName);
 
         if (ship != null) {
             ShipClass shipTrue = getCoordinatesSunken(ship);
-
             if (shipTrue != null) {
-
-
                 return shipTrue;
-
             } else {
-                ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
                 if (waterZone.getName().equals(row + "," + column)) {
+                    ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
                     waterZone.setImageIcon(shipIcon);
-                    return null;
-
                 }
             }
         } else {
-            ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
             if (waterZone.getName().equals(row + "," + column)) {
+                ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
                 waterZone.setImageIcon(shipIcon);
-                return null;
             }
         }
+
         return null;
     }
 
 
-    public ShipClass checkSunken(String string){
-        String row = String.valueOf(string.charAt(0));
-        String column = String.valueOf(string.charAt(2));
-        String coordinatesSearch = "" + row + "" + column;
+
+    public ShipClass checkSunken(String zoneName) {
+        String row = String.valueOf(zoneName.charAt(0));
+        String column = String.valueOf(zoneName.charAt(2));
+        String coordinatesSearch = row + column;
+
+        ShipClass[] ships = (turno == 0) ? shipsCpu : shipsUser;
+
         for (ShipClass ship : ships) {
             if (ship != null) {
                 ArrayList<String> coordinates = ship.getCoordinates();
-                for (String coordinate : coordinates) {
-                    if (coordinate.equals(coordinatesSearch)) {
-                        System.out.println("se repitio");
-                        System.out.println(ship.getCoordinates());
-                        return ship;
-                    }
+                if (coordinates.contains(coordinatesSearch)) {
+                    // Imprime información de depuración
+                    System.out.println("Se encontró una coincidencia");
+                    System.out.println(ship.getCoordinates());
+                    return ship;
                 }
             }
-        } return null;
-    }
-
-    public ShipClass getCoordinatesSunken(ShipClass ship) {
-        ArrayList coordinates = ship.getCoordinates();
-        boolean sunken = headdresses.containsAll(coordinates);
-        /*System.out.println(headdresses);
-        System.out.println(coordinates);
-        System.out.println(sunken)*/;
-        if (sunken) {
-            return ship;
         }
 
         return null;
     }
 
 
+    public ShipClass getCoordinatesSunken(ShipClass ship) {
+        ArrayList<String> coordinates = ship.getCoordinates();
+        boolean isSunken;
+
+        if (turno == 0) {
+            isSunken = hitsCpu.containsAll(coordinates);
+        } else {
+            isSunken = hitsUser.containsAll(coordinates);
+        }
+
+        if (isSunken) {
+            return ship;
+        } else {
+            return null;
+        }
+    }
 
 
 

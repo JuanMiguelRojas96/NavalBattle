@@ -175,8 +175,10 @@ public class NavalBattleGUI extends JFrame {
     }
 
     public void play() {
+
         modelNavalBatlle.generateShips();
         ships = modelNavalBatlle.getShips();
+        modelNavalBatlle.imprimirShips();
         Component[] components = panelUser.getComponents();
         //modelNavalBatlle.imprimirShips();
         /*System.out.println(ships);
