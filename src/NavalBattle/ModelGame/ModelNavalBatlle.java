@@ -12,20 +12,23 @@ public class ModelNavalBatlle {
             bombardier2,bombardier3, submarine,submarine2,frigate,frigate2,frigate3,frigate4;
     private ShipClass[] ships;
 
-    private String[] images = {"/agua.png","/tocado.png"};
+    private String[] images;
 
     private ArrayList  headdresses;
 
 
-    public ShipClass[] getShips() {
-        return ships;
-    }
+
 
     public ModelNavalBatlle(){
 
         ships = new ShipClass[10];
         headdresses = new ArrayList<>();
+        images  = new String[]{"/agua.png", "/tocado.png"};
 
+    }
+
+    public ShipClass[] getShips() {
+        return ships;
     }
 
     public void generateShips(){
@@ -64,12 +67,13 @@ public class ModelNavalBatlle {
 
 
         generateCoordinates( aircraftCarrier);
+
         generateCoordinates( submarine);
         generateCoordinates( submarine2);
 
         generateCoordinates( bombardier);
 
-        generateCoordinates( submarine);
+
         generateCoordinates( bombardier2);
         generateCoordinates( bombardier3);
 
@@ -84,7 +88,7 @@ public class ModelNavalBatlle {
 
     }
 
-    public void imprimirShips() {
+    /*public void imprimirShips() {
         for (int i = 0; i < ships.length; i++) {
             if (ships[i] != null) {
                 System.out.println("Barco " + (i+1) + ":");
@@ -97,7 +101,7 @@ public class ModelNavalBatlle {
                 System.out.println();
             }
         }
-    }
+    }*/
     private boolean checkCoordinates(int fila, int column) {
         String coordinatesSearch = "" + fila + "" + column;
         for (ShipClass ship : ships) {
@@ -105,8 +109,8 @@ public class ModelNavalBatlle {
                 ArrayList<String> coordinates = ship.getCoordinates();
                 for (String coordinate : coordinates) {
                     if (coordinate.equals(coordinatesSearch)) {
-                        System.out.println("se repitio");
-                        System.out.println(coordinate);
+                       /* System.out.println("se repitio");
+                        System.out.println(coordinate);*/
                         return false;
                     }
                 }
@@ -118,8 +122,8 @@ public class ModelNavalBatlle {
     private void generateCoordinates(ShipClass ship) {
         Random random = new Random();
         int length = ship.getSize();
-        int maxX = 10 - length;
-        int maxY = 10 - length;
+        int maxX = 11 - length;
+        int maxY = 11 - length;
 
         int posX;
         int posY;
@@ -146,7 +150,7 @@ public class ModelNavalBatlle {
                     System.out.println("no se pudo");
                     break;
                 }
-                System.out.println("si se pudo");
+                //System.out.println("si se pudo");
             }
         } while (!isValid);
 
@@ -178,6 +182,7 @@ public class ModelNavalBatlle {
     public ShipClass handleWaterZoneClick(WaterZone waterZone) {
         String string = waterZone.getName();
         System.out.println(string);
+        //verificar jean heyller
         String row = String.valueOf(string.charAt(0));
         String column = String.valueOf(string.charAt(2));
         headdresses.add(row + column);
@@ -220,8 +225,8 @@ public class ModelNavalBatlle {
                 ArrayList<String> coordinates = ship.getCoordinates();
                 for (String coordinate : coordinates) {
                     if (coordinate.equals(coordinatesSearch)) {
-                        /*System.out.println("se repitio");
-                        System.out.println(ship);*/
+                        System.out.println("se repitio");
+                        System.out.println(ship.getCoordinates());
                         return ship;
                     }
                 }

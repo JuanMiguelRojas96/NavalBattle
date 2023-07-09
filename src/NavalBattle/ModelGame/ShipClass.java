@@ -10,6 +10,10 @@ public class ShipClass {
 
     private String orientation;
 
+    private String typeShip;
+
+    ArrayList<String> coordinates = new ArrayList<>();
+
     public void setOrientation(String orientation) {
         this.orientation = orientation;
     }
@@ -18,7 +22,7 @@ public class ShipClass {
         return orientation;
     }
 
-    ArrayList<String> coordinates = new ArrayList<>();
+
 
     public void setcoordinates(int row, int column){
         coordinates.add(""+row+""+column);
@@ -28,7 +32,7 @@ public class ShipClass {
         return coordinates;
     }
 
-    private String typeShip;
+
 
     public String getTypeShip() {
         return typeShip;
