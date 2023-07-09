@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 /**
  * This class is used for ...
@@ -161,7 +160,7 @@ public class NavalBattleGUI extends JFrame {
             if (component instanceof WaterZone) {
                 WaterZone waterZone = (WaterZone) component;
 
-                ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/hundido.png"));
+                ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/shipStates/hundido.png"));
 
                 for (int i = 0; i < ship.getSize(); i++) {
 

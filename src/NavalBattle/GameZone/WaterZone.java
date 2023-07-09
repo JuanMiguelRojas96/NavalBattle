@@ -6,7 +6,7 @@ public class WaterZone extends  JLabel {
 
 
     public  WaterZone( ){
-        this.water = new ImageIcon(getClass().getResource("/resources/water.png")).getImage();
+        this.water = new ImageIcon(getClass().getResource("/resources/shipStates/water.png")).getImage();
 
     }
     public void setImageIcon(ImageIcon icon) {

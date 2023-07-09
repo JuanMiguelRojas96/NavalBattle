@@ -193,7 +193,7 @@ public class ModelNavalBatlle {
                 return shipTrue;
 
             } else {
-                ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
+                ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/shipStates/" + image));
                 if (waterZone.getName().equals(row + "," + column)) {
                     waterZone.setImageIcon(shipIcon);
                     return null;
@@ -201,7 +201,7 @@ public class ModelNavalBatlle {
                 }
             }
         } else {
-            ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
+            ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/shipStates/" + image));
             if (waterZone.getName().equals(row + "," + column)) {
                 waterZone.setImageIcon(shipIcon);
                 return null;
