@@ -22,6 +22,7 @@ public class ModelNavalBatlle {
     public ModelNavalBatlle(){
 
         ships = new ShipClass[10];
+
         headdresses = new ArrayList<>();
         images  = new String[]{"/agua.png", "/tocado.png"};
 
