@@ -9,6 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+
+/**
+ * The ModelNavalBatlle class represents the model of the program and is responsible for handling all the game logic.
+ * It receives coordinates from the front end, performs the necessary verifications,
+ * and sends the obtained data back to the front end.
+ */
 public class ModelNavalBatlle {
 
     private ShipClass[] shipsCpu,shipsUser;
@@ -20,8 +26,13 @@ public class ModelNavalBatlle {
     private ArrayList hitsCpu,hitsUser;
 
 
-
-
+    /**
+     * Constructor for the modelNavalBatle class.
+     * It initializes the shipsCpu and shipsUser arrays with a length of 10.
+     * It creates an empty ArrayList for hitsCpu to store hit positions.
+     * It initializes the images array with paths to water and hit images.
+     * The turno variable is set to 0, representing the user's turn, and 1 represents the CPU's turn.
+     */
     public ModelNavalBatlle(){
 
         shipsCpu = new ShipClass[10];
@@ -34,11 +45,19 @@ public class ModelNavalBatlle {
         turno =  0;
 
     }
-
+    /**
+     * The getShips method returns the array of ships (shipsUser) of the ShipClass type.
+     * It retrieves and returns the array containing the user's ships.
+     *
+     * @return The array of ships (shipsUser) of the ShipClass type representing the user's ships.
+     */
     public ShipClass[] getShips() {
         return shipsUser;
     }
 
+    /**
+     * The generateShips method generates and assigns ships to the CPU and user.
+     */
     public void generateShips(){
 
         String cpu = "cpu";
@@ -76,7 +95,7 @@ public class ModelNavalBatlle {
 
 
 
-    public void imprimirShips() {
+    /*public void imprimirShips() {
         for (int i = 0; i < shipsCpu.length; i++) {
             if (shipsCpu[i] != null) {
                 System.out.println("Barco " + (i+1) + ":");
@@ -89,9 +108,18 @@ public class ModelNavalBatlle {
                 System.out.println();
             }
         }
-    }
-    private boolean checkCoordinates(int fila, int column, String typeShip) {
-        String coordinatesSearch = "" + fila + "" + column;
+    }*/
+
+    /**
+     * The checkCoordinates method checks if the given coordinates are valid for placing a ship.
+     *
+     * @param row The row value of the coordinate.
+     * @param column The column value of the coordinate.
+     * @param typeShip The type of ship ("cpu" or "user").
+     * @return true if the coordinates are valid for placing a ship, false otherwise.
+     */
+    private boolean checkCoordinates(int row, int column, String typeShip) {
+        String coordinatesSearch = "" + row + "" + column;
 
         ShipClass[] ships = (typeShip.equals("cpu")) ? shipsCpu : shipsUser;
 
@@ -103,6 +131,13 @@ public class ModelNavalBatlle {
 
         return true;
     }
+
+    /**
+     * The generateCoordinates method generates and assigns coordinates for a ship.
+     *
+     * @param ship The ShipClass object for which coordinates are generated.
+     * @param typeShip The type of ship ("cpu" or "user").
+     */
 
 
     private void generateCoordinates(ShipClass ship,String typeShip) {
@@ -149,6 +184,14 @@ public class ModelNavalBatlle {
             ship.setcoordinates(setX, setY);
         }
     }
+
+    /**
+     * The getImage method retrieves the image path based on the given coordinate and ship type.
+     *
+     * @param coordinate The coordinate string in the format "row_column".
+     * @param typeShip The type of ship ("cpu" or "user").
+     * @return The image path based on the coordinate and ship type.
+     */
     public String getImage(String coordinate,String typeShip) {
         int row = Integer.parseInt(String.valueOf(coordinate.charAt(0)));
         int column = Integer.parseInt(String.valueOf(coordinate.charAt(2)));
@@ -165,6 +208,14 @@ public class ModelNavalBatlle {
         return image;
 
     }
+
+    /**
+     * The handleWaterZoneClick method handles the click on a WaterZone object.
+     *
+     * @param waterZone The WaterZone object representing the clicked water zone.
+     * @return The ShipClass object with accurate coordinates if a sunken ship is found, null otherwise.
+     */
+
     public ShipClass handleWaterZoneClick(WaterZone waterZone) {
         String zoneName = waterZone.getName();
         System.out.println(zoneName);
@@ -199,7 +250,13 @@ public class ModelNavalBatlle {
     }
 
 
+    /**
+     * The checkSunken method checks if a ship is sunken at the specified zone.
 
+     *
+     * @param zoneName The name of the zone to check for a sunken ship.
+     * @return The ShipClass object if a sunken ship is found, null otherwise.
+     */
     public ShipClass checkSunken(String zoneName) {
         String row = String.valueOf(zoneName.charAt(0));
         String column = String.valueOf(zoneName.charAt(2));
@@ -222,7 +279,12 @@ public class ModelNavalBatlle {
         return null;
     }
 
-
+    /**
+     * The getCoordinatesSunken method checks if all the coordinates of a ship have been hit, and it is sunken.
+     *
+     * @param ship The ShipClass object to check for sunken status.
+     * @return The ShipClass object if it is sunken, null otherwise.
+     */
     public ShipClass getCoordinatesSunken(ShipClass ship) {
         ArrayList<String> coordinates = ship.getCoordinates();
         boolean isSunken;
@@ -239,8 +301,6 @@ public class ModelNavalBatlle {
             return null;
         }
     }
-
-
 
 
 }
