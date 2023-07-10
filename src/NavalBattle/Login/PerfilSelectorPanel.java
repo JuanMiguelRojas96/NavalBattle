@@ -13,7 +13,7 @@ public class PerfilSelectorPanel extends JPanel {
     setLayout(new GridLayout(1, 3));
 
     // Fotos predeterminadas
-    String[] fotos = {"/resources/luffy.png", "/resources/zoro.png", "/resources/nami.png"};
+    String[] fotos = {"/resources/characteres/luffy.png", "/resources/characteres/zoro.png", "/resources/characteres/nami.png"};
 
     botonesPerfil = new JButton[3];
 

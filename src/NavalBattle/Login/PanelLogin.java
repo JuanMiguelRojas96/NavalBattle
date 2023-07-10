@@ -76,7 +76,7 @@ public class PanelLogin extends JPanel {
        setVisible(false);
        navalBattleGUI.getComponentesVisibles();
       }else{
-        JOptionPane.showMessageDialog(null,"Ingrese un Usuario Válido","Usuario Inválido",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null,"Ingrese un Usuario o Escoja un Personaje","Usuario Inválido",JOptionPane.INFORMATION_MESSAGE);
       }
     }
   }

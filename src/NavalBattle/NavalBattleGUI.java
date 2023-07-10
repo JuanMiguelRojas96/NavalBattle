@@ -6,10 +6,11 @@ import NavalBattle.ModelGame.ModelNavalBatlle;
 import NavalBattle.ModelGame.ShipClass;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 /**
  * This class is used for ...
@@ -25,7 +26,6 @@ public class NavalBattleGUI extends JFrame {
     private ModelNavalBatlle modelNavalBatlle;
 
     private ShipClass[] ships;
-    private  JButton play;
     private  Escucha escucha;
 
 
@@ -80,8 +80,10 @@ public class NavalBattleGUI extends JFrame {
 
         panelUser = new GamePanel(10,10);
         panelUser.setVisible(false);
-        panelUser.setBorder(BorderFactory.createTitledBorder(null ,"PANEL USUARIO", TitledBorder.CENTER,
-                TitledBorder.DEFAULT_JUSTIFICATION , new Font("Stencil",Font.PLAIN+Font.BOLD,20),Color.BLACK));
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(null ,"PANEL USUARIO", TitledBorder.CENTER,
+            TitledBorder.DEFAULT_JUSTIFICATION , new Font("Stencil",Font.PLAIN+Font.BOLD,20),Color.BLACK);
+        LineBorder lineBorder = new LineBorder(Color.BLACK);
+        panelUser.setBorder(BorderFactory.createCompoundBorder(lineBorder,titledBorder));
         gbc.gridx =0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
@@ -92,28 +94,20 @@ public class NavalBattleGUI extends JFrame {
 
         panelCpu = new GamePanel(10,10);
         panelCpu.setVisible(false);
-        panelCpu.setBorder(BorderFactory.createTitledBorder(null ,"PANEL CPU", TitledBorder.CENTER,
-                TitledBorder.DEFAULT_JUSTIFICATION , new Font("Stencil",Font.PLAIN+Font.BOLD,20),Color.BLACK));
+        TitledBorder titledBorder1 =BorderFactory.createTitledBorder(null ,"PANEL CPU", TitledBorder.CENTER,
+            TitledBorder.DEFAULT_JUSTIFICATION , new Font("Stencil",Font.PLAIN+Font.BOLD,20),Color.BLACK);
+        panelCpu.setBorder(BorderFactory.createCompoundBorder(lineBorder,titledBorder1));
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         this.add(panelCpu,gbc);
 
-        play = new JButton("play");
-        play.addActionListener(escucha);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.CENTER;
-        this.add(play,gbc);
-
-        this.clickWaterZone();
 
     }
 
     public void getComponentesVisibles() {
+        play();
         headerProject.setImage(panelLogin.getAvatarLogin());
         headerProject.setUserName(panelLogin.getUsername());
         headerProject.setVisible(true);
@@ -154,7 +148,7 @@ public class NavalBattleGUI extends JFrame {
             if (component instanceof WaterZone) {
                 WaterZone waterZone = (WaterZone) component;
 
-                ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/hundido.png"));
+                ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/shipStates/hundido.png"));
 
                 for (int i = 0; i < ship.getSize(); i++) {
 
@@ -235,9 +229,6 @@ public class NavalBattleGUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource()==play){
-                play();
-            }
         }
 
         @Override

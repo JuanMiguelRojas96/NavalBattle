@@ -13,6 +13,7 @@ public class GamePanel extends JPanel {
 
     public GamePanel(int height, int width) {
         this.setPreferredSize(new Dimension(width*50,height*50));
+        this.setBackground(new Color(157, 221, 220));
 
         setLayout(new GridBagLayout());
         waterZones = new WaterZone[height][width];
@@ -25,7 +26,7 @@ public class GamePanel extends JPanel {
                 WaterZone waterZone = new WaterZone();
                 waterZones[row][column] = waterZone;
                 waterZones[row][column].setName(""+row+","+column);
-
+                waterZones[row][column].setOpaque(false);
                 gbc.gridx = column;
                 gbc.gridy = row;
                 gbc.fill = GridBagConstraints.BOTH;
