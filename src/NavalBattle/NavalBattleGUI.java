@@ -13,31 +13,28 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * This class is used for ...
- * @autor Carlos Felipe Montoya carlos.felipe.montoya@correounivalle.edu.co
- * @version v.1.0.0 date:21/03/2023
+ * The NavalBattleGUI class represents the graphical user interface of the Naval Battle game.
+ * It provides the main window and controls the layout and behavior of the game components.
+ *
+ * @author Juan Miguel Rojas Noriega juan.noriega@correounivalle.edu.co
+ * @author Jean Heyller Palomino jean.palomino@correounivalle.edu.co
+ * @author Christian Daniel Villegas christian.villegas@correounivalle.edu.co
+ * @version v.1.0.0 date: 09/07/2023
  */
 public class NavalBattleGUI extends JFrame {
-
     private Header headerProject;
     private  GamePanel panelUser, panelCpu;
     private PanelLogin panelLogin;
-
     private ModelNavalBatlle modelNavalBatlle;
-
     private ShipClass[] ships;
     private  Escucha escucha;
 
-
-
-
     /**
-     * Constructor of GUI class
+     * Constructor for the NavalBattleGUI class.
+     * Initializes the graphical user interface and sets up the default JFrame configuration.
      */
     public NavalBattleGUI(){
         initGUI();
-
-        //Default JFrame configuration
         this.setTitle("The Title app");
         this.setSize(1050,600);
         this.setResizable(true);
@@ -45,29 +42,25 @@ public class NavalBattleGUI extends JFrame {
         this.setLocationRelativeTo(null);
         this.getContentPane().setBackground(new Color(1,138,180));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
     }
 
     /**
-     * This method is used to set up the default JComponent Configuration,
-     * create Listener and control Objects used for the GUI class
+     * Initializes the graphical user interface by setting up the default JComponent configuration,
+     * creating listeners, and controlling objects used in the GUI.
      */
     private void initGUI() {
-        //Set up JFrame Container's Layout
         this.getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+
         escucha = new Escucha();
         modelNavalBatlle = new ModelNavalBatlle();
         ships = new ShipClass[2];
 
-        //Create Listener Object and Control Object
-
-
-        //Set up JComponents
+        //Panel Login configuration and initialization
         panelLogin = new PanelLogin(this);
         this.add(panelLogin);
 
+        //Configuration and initialization of the Header, which contains the User Profile.
         headerProject = new Header(Color.BLACK);
         headerProject.setVisible(false);
         gbc.gridx = 0;
@@ -78,6 +71,7 @@ public class NavalBattleGUI extends JFrame {
         gbc.anchor = GridBagConstraints.CENTER;
         this.add(headerProject,gbc);
 
+        //Configuration and initialization of the User Panel, where our boats will be.
         panelUser = new GamePanel(10,10);
         panelUser.setVisible(false);
         TitledBorder titledBorder = BorderFactory.createTitledBorder(null ,"PANEL USUARIO", TitledBorder.CENTER,
@@ -90,8 +84,7 @@ public class NavalBattleGUI extends JFrame {
         gbc.gridheight = 1;
         this.add(panelUser,gbc);
 
-
-
+        //Configuration and initialization of the CPU Panel, where the enemy ships will be.
         panelCpu = new GamePanel(10,10);
         panelCpu.setVisible(false);
         TitledBorder titledBorder1 =BorderFactory.createTitledBorder(null ,"PANEL CPU", TitledBorder.CENTER,
@@ -102,10 +95,12 @@ public class NavalBattleGUI extends JFrame {
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         this.add(panelCpu,gbc);
-
-
     }
 
+    /**
+     * Retrieves the visible components of the GUI and starts the game.
+     * Sets the header image and username based on the login panel input.
+     */
     public void getComponentesVisibles() {
         play();
         headerProject.setImage(panelLogin.getAvatarLogin());
@@ -115,8 +110,9 @@ public class NavalBattleGUI extends JFrame {
         panelCpu.setVisible(true);
     }
 
-
-
+    /**
+     * Adds a click listener to all WaterZone components in the CPU panel.
+     */
     public void clickWaterZone() {
         Component[] components = panelCpu.getComponents();
         for (Component component : components) {
@@ -128,30 +124,18 @@ public class NavalBattleGUI extends JFrame {
         }
     }
 
-
-    //
-    /*public void handleWaterZoneClick(WaterZone waterZone) {
-        String string = waterZone.getName();
-        String image = modelNavalBatlle.getImage(string);
-        System.out.println(image);
-        ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/" + image));
-        String row = String.valueOf(string.charAt(0));
-        String column = String.valueOf(string.charAt(2));
-        if (waterZone.getName().equals(row + "," + column)) {
-            waterZone.setImageIcon(shipIcon);
-        }
-    }*/
-
+    /**
+     * Marks the WaterZone components of a sunken ship in the CPU panel.
+     *
+     * @param ship The ship that has been sunk.
+     */
     public void setSonken(ShipClass ship) {
         Component[] components = panelCpu.getComponents();
         for (Component component : components) {
             if (component instanceof WaterZone) {
                 WaterZone waterZone = (WaterZone) component;
-
                 ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/shipStates/hundido.png"));
-
                 for (int i = 0; i < ship.getSize(); i++) {
-
                     if(ship.getOrientation()== "H"){
                         if (waterZone.getName().equals(ship.getcoordinateX() + "," + (ship.getcoordinateY() + i))) {
                             waterZone.setImageIcon(imageIcon);
@@ -161,28 +145,24 @@ public class NavalBattleGUI extends JFrame {
                             waterZone.setImageIcon(imageIcon);
                         }
                     }
-
-
                 }
             }
         }
     }
 
+    /**
+     * Starts the game by generating the ships, displaying them in the user panel,
+     * and attaching click listeners to the water zones in the CPU panel.
+     */
     public void play() {
-
         modelNavalBatlle.generateShips();
         ships = modelNavalBatlle.getShips();
         modelNavalBatlle.imprimirShips();
         Component[] components = panelUser.getComponents();
-        //modelNavalBatlle.imprimirShips();
-        /*System.out.println(ships);
-        System.out.println(components);*/
-        //clickWaterZone();
-
+        clickWaterZone();
         for (Component component : components) {
             if (component instanceof WaterZone) {
                 WaterZone waterZone = (WaterZone) component;
-
                 for (ShipClass ship : ships) {
                     if (ship != null) {
                         for (int i = 0; i < ship.getSize(); i++) {
@@ -197,17 +177,11 @@ public class NavalBattleGUI extends JFrame {
                                     waterZone.setImageIcon(shipIcon);
                                 }
                             }
-
-
                         }
                     }
                 }
             }
         }
-
-        /*panelUser.revalidate();
-        panelUser.repaint();
-        System.out.println("funciono");*/
     }
 
 
@@ -223,14 +197,13 @@ public class NavalBattleGUI extends JFrame {
     }
 
     /**
-     * inner class that extends an Adapter Class or implements Listeners used by GUI class
+     * The Escucha class is an inner class that extends an Adapter Class or implements Listeners
+     * used by the NavalBattleGUI class for handling events.
      */
     private class Escucha  implements ActionListener, MouseListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
         }
-
         @Override
         public void mouseClicked(MouseEvent e) {
             Component component = e.getComponent();
@@ -240,28 +213,19 @@ public class NavalBattleGUI extends JFrame {
                 if(ship!=null){
                     setSonken(ship);
                 }
-
             }
         }
-
         @Override
         public void mousePressed(MouseEvent e) {
-
         }
-
         @Override
         public void mouseReleased(MouseEvent e) {
-
         }
-
         @Override
         public void mouseEntered(MouseEvent e) {
-
         }
-
         @Override
         public void mouseExited(MouseEvent e) {
-
         }
     }
 }
