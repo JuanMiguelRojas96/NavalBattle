@@ -76,10 +76,6 @@ public class ModelNavalBatlle {
 
 
 
-
-
-
-
     public void imprimirShips() {
         for (int i = 0; i < shipsCpu.length; i++) {
             if (shipsCpu[i] != null) {

@@ -47,6 +47,8 @@ public class NavalBattleGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
+
+
     }
 
     /**
@@ -108,6 +110,7 @@ public class NavalBattleGUI extends JFrame {
 
     public void getComponentesVisibles() {
         play();
+        clickWaterZone();
         headerProject.setImage(panelLogin.getAvatarLogin());
         headerProject.setUserName(panelLogin.getUsername());
         headerProject.setVisible(true);
