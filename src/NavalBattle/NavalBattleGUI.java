@@ -103,6 +103,7 @@ public class NavalBattleGUI extends JFrame {
         gbc.gridheight = 1;
         this.add(panelCpu,gbc);
 
+
     }
 
     public void getComponentesVisibles() {
@@ -117,21 +118,12 @@ public class NavalBattleGUI extends JFrame {
 
 
     public void clickWaterZone() {
-        Component[] components = panelUser.getComponents();
+        Component[] components = panelCpu.getComponents();
         for (Component component : components) {
             if (component instanceof WaterZone) {
                 WaterZone waterZone = (WaterZone) component;
-                waterZone.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        ShipClass ship = modelNavalBatlle.handleWaterZoneClick(waterZone);
-                        if(ship!=null){
-                            setSonken(ship);
-                        }
+                waterZone.addMouseListener(escucha);
 
-
-                    }
-                });
             }
         }
     }
@@ -151,7 +143,7 @@ public class NavalBattleGUI extends JFrame {
     }*/
 
     public void setSonken(ShipClass ship) {
-        Component[] components = panelUser.getComponents();
+        Component[] components = panelCpu.getComponents();
         for (Component component : components) {
             if (component instanceof WaterZone) {
                 WaterZone waterZone = (WaterZone) component;
@@ -177,13 +169,15 @@ public class NavalBattleGUI extends JFrame {
     }
 
     public void play() {
+
         modelNavalBatlle.generateShips();
         ships = modelNavalBatlle.getShips();
-        Component[] components = panelUser.getComponents();
         modelNavalBatlle.imprimirShips();
+        Component[] components = panelUser.getComponents();
+        //modelNavalBatlle.imprimirShips();
         /*System.out.println(ships);
         System.out.println(components);*/
-        clickWaterZone();
+        //clickWaterZone();
 
         for (Component component : components) {
             if (component instanceof WaterZone) {
@@ -239,7 +233,15 @@ public class NavalBattleGUI extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
+            Component component = e.getComponent();
+            if (component instanceof WaterZone) {
+                WaterZone waterZone = (WaterZone) component;
+                ShipClass ship = modelNavalBatlle.handleWaterZoneClick(waterZone);
+                if(ship!=null){
+                    setSonken(ship);
+                }
 
+            }
         }
 
         @Override
