@@ -7,6 +7,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The PanelLogin class represents a login panel in the game.
+ * It allows the user to enter their username and select an avatar.
+ * The panel includes a login button that triggers the login process.
+ */
 public class PanelLogin extends JPanel {
   private String username;
   private JTextField userText;
@@ -16,6 +21,13 @@ public class PanelLogin extends JPanel {
   private NavalBattleGUI navalBattleGUI;
   private PerfilSelectorPanel perfilSelectorPanel;
 
+
+  /**
+   * Constructor for the PanelLogin class.
+   * Initializes the login panel with its components and sets up the layout.
+   *
+   * @param navalBattleGUI The NavalBattleGUI instance.
+   */
 
   public PanelLogin(NavalBattleGUI navalBattleGUI){
     this.navalBattleGUI = navalBattleGUI;
@@ -27,6 +39,7 @@ public class PanelLogin extends JPanel {
     GridBagConstraints gbc = new GridBagConstraints();
     escucha = new Escucha();
 
+    //Initializes the Profile selector.
     perfilSelectorPanel= new PerfilSelectorPanel();
     gbc.gridx = 0;
     gbc.gridy = 0;
@@ -35,6 +48,7 @@ public class PanelLogin extends JPanel {
     this.add(perfilSelectorPanel,gbc);
 
 
+    //Initializes the label that requests the entry of the username.
     textLabel = new JLabel("Ingresa Tu Nombre, Capitán");
     textLabel.setFont(new Font("Matura MT Script Capitals",Font.BOLD,18));
     gbc.gridx = 0;
@@ -43,7 +57,7 @@ public class PanelLogin extends JPanel {
     gbc.anchor = GridBagConstraints.CENTER;
     this.add(textLabel,gbc);
 
-
+    //Initializes the text field where we will enter our username.
     userText = new JTextField(10);
     userText.setHorizontalAlignment(SwingConstants.CENTER);
     userText.setPreferredSize(new Dimension(150,50));
@@ -56,6 +70,7 @@ public class PanelLogin extends JPanel {
     gbc.anchor = GridBagConstraints.CENTER;
     this.add(userText,gbc);
 
+    //Initialize the button to start session.
     login = new JButton("!A Luchar¡");
     login.setFont(new Font("Matura MT Script Capitals",Font.BOLD,18));
     login.setBackground(new Color(170, 183, 197));
@@ -67,8 +82,11 @@ public class PanelLogin extends JPanel {
     this.add(login,gbc);
   }
 
+  /**
+   * The Escucha class is an inner class that implements the ActionListener interface.
+   * It handles the login button click event and performs the login process.
+   */
   private class Escucha implements ActionListener{
-
     @Override
     public void actionPerformed(ActionEvent e) {
       if (e.getSource() == login && !userText.getText().trim().isEmpty() && perfilSelectorPanel.getPerfilSeleccionado() != null){
@@ -80,9 +98,21 @@ public class PanelLogin extends JPanel {
       }
     }
   }
+
+  /**
+   * Returns the username entered by the user.
+   *
+   * @return The username.
+   */
   public String getUsername(){
     return username;
   }
+
+  /**
+   * Returns the selected avatar image.
+   *
+   * @return The avatar image.
+   */
   public ImageIcon getAvatarLogin(){
     return perfilSelectorPanel.getPerfilSeleccionado();
   }
