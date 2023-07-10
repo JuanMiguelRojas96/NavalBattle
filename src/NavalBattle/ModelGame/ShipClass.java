@@ -31,7 +31,6 @@ public class ShipClass {
     }
 
     ArrayList<String> coordinates = new ArrayList<>(); // List of coordinates occupied by the ship
-
     /**
      * Sets the orientation of the ship.
      *
@@ -70,7 +69,7 @@ public class ShipClass {
         return coordinates;
     }
 
-    /**
+    /**d
      * Returns the type of the ship.
      *
      * @return The type of the ship.
