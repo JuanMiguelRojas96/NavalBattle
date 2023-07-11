@@ -319,14 +319,16 @@ public class NavalBattleGUI extends JFrame {
                         setSonken(ship);
                     }
                     turn = modelNavalBatlle.getTurno();
+                    System.out.println(turn);
 
                 }else {
                     ArrayList coordinates = modelNavalBatlle.movesCpu();
                     printArary(coordinates);
                     turn = modelNavalBatlle.getTurno();
+                    System.out.println(turn);
                 }
             }
-            System.out.println(turn+"hola");
+
         }
         @Override
         public void mousePressed(MouseEvent e) {
