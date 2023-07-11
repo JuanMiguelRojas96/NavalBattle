@@ -1,13 +1,20 @@
 package NavalBattle.ModelGame;
 
 
+
+
 import NavalBattle.GameZone.WaterZone;
 
+
+
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import javax.swing.Timer;
+import java.awt.*;
+import java.util.*;
+import java.util.TimerTask;
+
+;
+
 
 
 /**
@@ -21,9 +28,15 @@ public class ModelNavalBatlle {
 
     private String[] images;
 
-    private Integer turno;
+    private String move, lastMove;
 
-    private ArrayList hitsCpu,hitsUser;
+    private Boolean change;
+
+    private Integer turno,status;
+
+    private ArrayList hitsCpu,hitsUser,hitsAux;
+
+
 
 
     /**
@@ -38,11 +51,18 @@ public class ModelNavalBatlle {
         shipsCpu = new ShipClass[10];
         shipsUser = new ShipClass[10];
 
-
+        hitsUser = new ArrayList<>();
         hitsCpu = new ArrayList<>();
+        hitsAux = new ArrayList<>();
         images  = new String[]{"/agua.png", "/tocado.png"};
         //o turno usuario, 1 turno cpu
         turno =  0;
+        move = "";
+        status = 0;
+        lastMove = "";
+        change = false;
+
+
 
     }
     /**
@@ -53,6 +73,41 @@ public class ModelNavalBatlle {
      */
     public ShipClass[] getShips() {
         return shipsUser;
+    }
+
+    public Integer getTurno() {
+        return turno;
+    }
+
+    public void setTurno(Integer turno) {
+        this.turno = turno;
+    }
+    public ArrayList getHitsCpu() {
+        return hitsCpu;
+    }
+
+    public void setMove(int row,int colum,int orientation) {
+        this.move = row+""+colum+""+orientation;
+    }
+
+    public void setLastMove(int row,int colum,int orientation) {
+        this.lastMove = row+""+colum+""+orientation;
+    }
+
+    public String getMove() {
+        return move;
+    }
+
+    public String getLastMove() {
+        return lastMove;
+    }
+
+    public void setChange(Boolean change) {
+        this.change = change;
+    }
+
+    public Boolean getChange() {
+        return change;
     }
 
     /**
@@ -95,7 +150,7 @@ public class ModelNavalBatlle {
 
 
 
-    /*public void imprimirShips() {
+    public void imprimirShips() {
         for (int i = 0; i < shipsCpu.length; i++) {
             if (shipsCpu[i] != null) {
                 System.out.println("Barco " + (i+1) + ":");
@@ -103,12 +158,12 @@ public class ModelNavalBatlle {
                 System.out.println("Longitud: " + shipsCpu[i].getSize());
                 System.out.println("Posición X: " + shipsUser[i].getcoordinateX());
                 System.out.println("Posición Y: " + shipsCpu[i].getcoordinateY());
-                System.out.println("coordenadas Y: " + shipsCpu[i].getCoordinates());
+                System.out.println("coordenadas Y: " + shipsUser[i].getCoordinates());
                 System.out.println("orienatcion : " + shipsCpu[i].getOrientation());
                 System.out.println();
             }
         }
-    }*/
+    }
 
     /**
      * The checkCoordinates method checks if the given coordinates are valid for placing a ship.
@@ -201,9 +256,12 @@ public class ModelNavalBatlle {
         if (!checkCoordinates(row, column,typeShip)) {
 
             image = images[1];
+            turno = 0;
+            System.out.println("turno 0");
         }
         else{
             image = images[0];
+            turno = 1;
         }
         return image;
 
@@ -225,24 +283,27 @@ public class ModelNavalBatlle {
 
         hitsCpu.add(row + column);
 
-        String image = getImage(zoneName, (turno == 0) ? "cpu" : "user");
+        String image = getImage(zoneName,  "cpu");
 
         ShipClass ship = checkSunken(zoneName);
 
         if (ship != null) {
             ShipClass shipTrue = getCoordinatesSunken(ship);
             if (shipTrue != null) {
+                turno = 1;
                 return shipTrue;
             } else {
                 if (waterZone.getName().equals(row + "," + column)) {
                     ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/shipStates/" + image));
                     waterZone.setImageIcon(shipIcon);
+
                 }
             }
         } else {
             if (waterZone.getName().equals(row + "," + column)) {
                 ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/shipStates/" + image));
                 waterZone.setImageIcon(shipIcon);
+
             }
         }
 
@@ -269,13 +330,14 @@ public class ModelNavalBatlle {
                 ArrayList<String> coordinates = ship.getCoordinates();
                 if (coordinates.contains(coordinatesSearch)) {
                     // Imprime información de depuración
-                    System.out.println("Se encontró una coincidencia");
-                    System.out.println(ship.getCoordinates());
+                   /* System.out.println("Se encontró una coincidencia");
+                    System.out.println(ship.getCoordinates());*/
+                    System.out.println("funciona");
                     return ship;
                 }
             }
         }
-
+        System.out.println("no funciona");
         return null;
     }
 
@@ -293,6 +355,7 @@ public class ModelNavalBatlle {
             isSunken = hitsCpu.containsAll(coordinates);
         } else {
             isSunken = hitsUser.containsAll(coordinates);
+            System.out.println("se hundio");
         }
 
         if (isSunken) {
@@ -301,6 +364,217 @@ public class ModelNavalBatlle {
             return null;
         }
     }
+
+    public String checkBreak(int row, int colum, int orientation) {
+        String coordinates = "";
+        String coordinatesAux = "";
+        boolean shouldBreak = false;
+
+        System.out.println("normal");
+
+        for (int i = 0; i < 4; i++) {
+            int checkX = row + (orientation == 0 ? i : 0);
+            int checkY = colum + (orientation == 0 ? 0 : i);
+            coordinates = checkX + " " + checkY;
+            coordinatesAux = checkX+""+checkY;
+            System.out.println(coordinates);
+            System.out.println("entro el barco");
+            hitsUser.add(coordinatesAux);
+            hitsAux.add(coordinates);
+            if (!checkCoordinates(checkX, checkY, "user")) {
+                System.out.println(coordinates);
+                ShipClass ship = checkSunken(coordinates);
+                    if (getCoordinatesSunken(ship)!=null){
+                        System.out.println("barco hundido");
+                        System.out.println(hitsUser);
+                        setChange(false);
+                        status = 2;
+                        turno = 0;
+                        shouldBreak = true;
+
+                    }else {
+                        status = 1;
+                        this.setLastMove(checkX,checkY,orientation);
+                        turno = 1;
+                    }
+            }else {
+                System.out.println("no golpeo");
+                if(status==1){
+                    shouldBreak = true;
+                    turno = 0;
+                }
+                else {
+                    status = 0;
+                    turno = 0;
+                    shouldBreak = true;
+                }
+
+                shouldBreak = true;
+            }
+
+            if (shouldBreak) {
+                break;
+            }
+        }
+
+        return coordinates;
+    }
+
+
+    public String checkBreakreverse(int row, int colum,int orientation){
+        String coordinates = "";
+        String coordinatesAux = "";
+        boolean shouldBreak = false;
+        System.out.println("reverse");
+
+        for (int i = 0; i < 4; i++) {
+            int checkX = row - (orientation == 0 ? i : 0);
+            int checkY = colum - (orientation == 0 ? 0 : i);
+            coordinates = checkX + " " + checkY;
+            coordinatesAux = checkX+""+checkY;
+            System.out.println(coordinates);
+            System.out.println(coordinates+""+"reverse");
+            System.out.println(row);
+            System.out.println(colum);
+            hitsUser.add(coordinatesAux);
+            hitsAux.add(coordinates);
+
+            if (!checkCoordinates(checkX, checkY, "user")) {
+                ShipClass ship = checkSunken(coordinates);
+                System.out.println(ship.getCoordinates());
+                    if (getCoordinatesSunken(ship)!=null) {
+                        System.out.println("hundido");
+                        setChange(false);
+                        System.out.println(hitsUser);
+                        status = 2;
+                        turno = 0;
+                        shouldBreak = true;
+                    }else {
+                        System.out.println("golpeo pero no se hundio");
+                        status = 1;
+                        this.setLastMove(checkX,checkY,orientation);
+            }
+            }else {
+                System.out.println("no golpeo");
+                if(status==1){
+                    shouldBreak = true;
+                    setChange(true);
+                    turno = 0;
+
+                }else {
+                    status = 0;
+                }
+
+
+                shouldBreak = true;
+            }
+
+            if (shouldBreak) {
+                break;
+            }
+        }
+
+        return coordinates;
+    }
+
+
+
+
+    public ArrayList movesCpu(){
+        System.out.println("entra ala funcion");
+        Random random = new Random();
+        int posX;
+        int posY;
+        int orientation;
+
+        do{ //primer tiro
+            if(this.getMove().equals("") && status==0){
+                System.out.println("entro condicion1 ");
+                posX = random.nextInt(9);
+                posY = random.nextInt(9);
+                orientation = random.nextInt(2);
+                this.setMove(posX,posY,orientation);
+                String lastCoordinate = checkBreak(posX,posY,orientation);
+
+                System.out.println(this.getMove());
+                //hubo tiro pero no dio golpe o se hundio un barco
+            }else if(this.getMove()!="" && status==2){
+                posX = random.nextInt(9);
+                posY = random.nextInt(9);
+                orientation = random.nextInt(2);
+                this.setMove(posX,posY,orientation);
+                String lastCoordinate = checkBreak(posX,posY,orientation);
+                String row = String.valueOf(lastCoordinate.charAt(0));
+                String column = String.valueOf(lastCoordinate.charAt(2));
+                System.out.println("entro condicion 2 ");
+                System.out.println(this.getLastMove());
+                //hubo tiro y le dio golpe pero no lo hundio
+            }else if(this.getMove()!="" && status==0){
+                posX = random.nextInt(9);
+                posY = random.nextInt(9);
+                orientation = random.nextInt(2);
+                this.setMove(posX,posY,orientation);
+                String lastCoordinate = checkBreak(posX,posY,orientation);
+                String row = String.valueOf(lastCoordinate.charAt(0));
+                String column = String.valueOf(lastCoordinate.charAt(2));
+                System.out.println("entro condicion 3 ");
+                System.out.println(this.getLastMove());
+                //hubo tiro y le dio golpe pero no lo hundio
+            } else if(this.getMove()!="" && status==1){
+                String move = this.getMove();
+                String rowMove = String.valueOf(move.charAt(0));
+                String columnMove = String.valueOf(move.charAt(1));
+                String orientationMove = String.valueOf(move.charAt(2));
+                int rowIntMove = Integer.parseInt(rowMove);
+                int columnIntMove = Integer.parseInt(columnMove);
+                int orientationIntMove = Integer.parseInt(orientationMove);
+                System.out.println("entro condicion 4 ");
+                System.out.println(this.getMove());
+
+                String lastMove = this.getLastMove();
+                String rowLast = String.valueOf(lastMove.charAt(0));
+                String columLast = String.valueOf(lastMove.charAt(1));
+                String orientationLast = String.valueOf(lastMove.charAt(2));
+                int rowIntMoveLast = Integer.parseInt(rowLast);
+                int columnIntMoveLast = Integer.parseInt(columLast);
+                int orientationIntMoveLast = Integer.parseInt(orientationLast);
+                // si es vertical  y no tiene que cambiar la orientacion
+                if(orientationIntMoveLast==0 && this.getChange()==false){
+                    //si termino en la misma posicion
+                    System.out.println("entro sin cambio");
+                    checkBreakreverse(rowIntMoveLast,columnIntMoveLast,orientationIntMove);
+                // s es horizontal y no tiene que cambiar la orientacion
+                }else if (orientationIntMoveLast==1 && this.getChange()==false){
+                    System.out.println("entro sin cambio");
+                    checkBreakreverse(rowIntMoveLast,columnIntMoveLast,orientationIntMove);
+                }else if(orientationIntMoveLast==0 && this.getChange()==true){
+                    System.out.println("entro con cambio");
+                    checkBreak(rowIntMoveLast,columnIntMoveLast,1);
+                }else if(orientationIntMoveLast==1 && this.getChange()==true){
+                    System.out.println("entro con cambio");
+                    checkBreak(rowIntMoveLast,columnIntMoveLast,0);
+                }
+            }
+
+        }while (turno==1);
+        System.out.println(hitsUser);
+        System.out.println(status);
+        return hitsUser;
+
+
+    }
+
+    /*public void  changeShift(){
+        switch (status){
+            case 0: turno = 1;
+                   break;
+
+            case 1: turno = 0;
+                   break;
+            case 2: turno = 0;
+                break;
+        }
+    }*/
 
 
 }
