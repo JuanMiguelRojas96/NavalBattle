@@ -11,6 +11,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.TimerTask;
+import java.util.Timer;
 
 /**
  * The NavalBattleGUI class represents the graphical user interface of the Naval Battle game.
@@ -28,6 +31,12 @@ public class NavalBattleGUI extends JFrame {
     private ModelNavalBatlle modelNavalBatlle;
     private ShipClass[] ships;
     private  Escucha escucha;
+
+    private Boolean press;
+
+    private Timer timer;
+
+    private int turn;
 
     /**
      * Constructor for the NavalBattleGUI class.
@@ -51,6 +60,9 @@ public class NavalBattleGUI extends JFrame {
     private void initGUI() {
         this.getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+
+        turn = 0;
+        press = false;
 
         escucha = new Escucha();
         modelNavalBatlle = new ModelNavalBatlle();
@@ -150,6 +162,27 @@ public class NavalBattleGUI extends JFrame {
         }
     }
 
+    public void setSonkenUser(ShipClass ship) {
+        Component[] components = panelUser.getComponents();
+        for (Component component : components) {
+            if (component instanceof WaterZone) {
+                WaterZone waterZone = (WaterZone) component;
+                ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/shipStates/hundido.png"));
+                for (int i = 0; i < ship.getSize(); i++) {
+                    if(ship.getOrientation()== "H"){
+                        if (waterZone.getName().equals(ship.getcoordinateX() + "," + (ship.getcoordinateY() + i))) {
+                            waterZone.setImageIcon(imageIcon);
+                        }
+                    }else{
+                        if (waterZone.getName().equals((ship.getcoordinateX() +i) + "," + ship.getcoordinateY())) {
+                            waterZone.setImageIcon(imageIcon);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Starts the game by generating the ships, displaying them in the user panel,
      * and attaching click listeners to the water zones in the CPU panel.
@@ -157,7 +190,12 @@ public class NavalBattleGUI extends JFrame {
     public void play() {
         modelNavalBatlle.generateShips();
         ships = modelNavalBatlle.getShips();
-        //modelNavalBatlle.imprimirShips();
+        modelNavalBatlle.imprimirShips();
+        modelNavalBatlle.movesCpu();
+        //this.setImage("5 4");
+
+        //modelNavalBatlle.checkBreak(4,5,0);
+
         Component[] components = panelUser.getComponents();
         clickWaterZone();
         for (Component component : components) {
@@ -182,7 +220,73 @@ public class NavalBattleGUI extends JFrame {
                 }
             }
         }
+
     }
+
+
+    public void  setImage(String coordinates) {
+        String row = String.valueOf(coordinates.charAt(0));
+        String column = String.valueOf(coordinates.charAt(2));
+        Component[] components = panelUser.getComponents();
+        for (Component component : components) {
+            if (component instanceof WaterZone) {
+                WaterZone waterZone = (WaterZone) component;
+                String image = modelNavalBatlle.getImage(coordinates,  "user");
+                ShipClass ship = modelNavalBatlle.checkSunken(coordinates);
+                if (ship != null) {
+                    ShipClass shipTrue = modelNavalBatlle.getCoordinatesSunken(ship);
+                    if (shipTrue != null) {
+                        //return shipTrue;
+                    } else {
+                        if (waterZone.getName().equals(row + "," + column)) {
+                            ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/shipStates/" + image));
+                            waterZone.setImageIcon(shipIcon);
+
+                        }
+                    }
+                } else {
+                    if (waterZone.getName().equals(row + "," + column)) {
+                        ImageIcon shipIcon = new ImageIcon(getClass().getResource("/resources/shipStates/" + image));
+                        waterZone.setImageIcon(shipIcon);
+
+                    }
+                }
+            }
+        }
+    }
+
+    public void printArary(ArrayList moves){
+        for(int i=0;i<moves.size();i++){
+            String coordiantes = (String) moves.get(i);
+            String row = String.valueOf(coordiantes.charAt(0));
+            String column = String.valueOf(coordiantes.charAt(1));
+            ShipClass ship = modelNavalBatlle.checkSunken(row+" "+column);
+            if (ship != null) {
+                ShipClass shipTrue = modelNavalBatlle.getCoordinatesSunken(ship);
+                if (shipTrue != null) {
+                    setSonkenUser(ship);
+                }
+            }else {
+                setImage(row+" "+column);
+            }
+        }
+    }
+
+    /*public void ejecutarModelNavalBatlle() {
+        if (turn == 0 && !press) {
+            timer = new Timer();
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    ArrayList coordinates = modelNavalBatlle.movesCpu();
+                    printArary(coordinates);
+                    turn = modelNavalBatlle.getTurno();
+                    timer.cancel();
+                }
+            };
+            timer.schedule(task, 3000); // 7000 milisegundos = 7 segundos
+        }
+    }*/
 
 
     /**
@@ -209,9 +313,16 @@ public class NavalBattleGUI extends JFrame {
             Component component = e.getComponent();
             if (component instanceof WaterZone) {
                 WaterZone waterZone = (WaterZone) component;
-                ShipClass ship = modelNavalBatlle.handleWaterZoneClick(waterZone);
-                if(ship!=null){
-                    setSonken(ship);
+                if(turn==0){
+                    ShipClass ship = modelNavalBatlle.handleWaterZoneClick(waterZone);
+                    if(ship!=null){
+                        setSonken(ship);
+                    }
+                    turn = modelNavalBatlle.getTurno();
+                }else {
+                    ArrayList coordinates = modelNavalBatlle.movesCpu();
+                    printArary(coordinates);
+                    turn = modelNavalBatlle.getTurno();
                 }
             }
         }
