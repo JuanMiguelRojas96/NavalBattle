@@ -56,8 +56,8 @@ public class ModelNavalBatlle {
         hitsAux = new ArrayList<>();
         images  = new String[]{"/agua.png", "/tocado.png"};
         //o turno usuario, 1 turno cpu
-        turno =  0;
         move = "";
+        turno = 0;
         status = 0;
         lastMove = "";
         change = false;
@@ -256,12 +256,11 @@ public class ModelNavalBatlle {
         if (!checkCoordinates(row, column,typeShip)) {
 
             image = images[1];
-            turno = 0;
-            System.out.println("turno 0");
+            //turno = 0;
         }
         else{
             image = images[0];
-            turno = 1;
+            //turno = 1;
         }
         return image;
 
@@ -276,7 +275,7 @@ public class ModelNavalBatlle {
 
     public ShipClass handleWaterZoneClick(WaterZone waterZone) {
         String zoneName = waterZone.getName();
-        System.out.println(zoneName);
+        //System.out.println(zoneName);
 
         String row = String.valueOf(zoneName.charAt(0));
         String column = String.valueOf(zoneName.charAt(2));
@@ -285,12 +284,18 @@ public class ModelNavalBatlle {
 
         String image = getImage(zoneName,  "cpu");
 
+        if(image=="/agua.png"){
+            this.setTurno(1);
+        }else {
+            this.setTurno(0);
+        }
+
         ShipClass ship = checkSunken(zoneName);
 
         if (ship != null) {
             ShipClass shipTrue = getCoordinatesSunken(ship);
             if (shipTrue != null) {
-                turno = 1;
+                this.setTurno(0);
                 return shipTrue;
             } else {
                 if (waterZone.getName().equals(row + "," + column)) {
@@ -337,7 +342,6 @@ public class ModelNavalBatlle {
                 }
             }
         }
-        System.out.println("no funciona");
         return null;
     }
 
@@ -389,23 +393,23 @@ public class ModelNavalBatlle {
                         System.out.println(hitsUser);
                         setChange(false);
                         status = 2;
-                        turno = 0;
+                        this.setTurno(0);
                         shouldBreak = true;
 
                     }else {
                         status = 1;
                         this.setLastMove(checkX,checkY,orientation);
-                        turno = 1;
+                        this.setTurno(1);
                     }
             }else {
                 System.out.println("no golpeo");
                 if(status==1){
                     shouldBreak = true;
-                    turno = 0;
+                    this.setTurno(0);
                 }
                 else {
                     status = 0;
-                    turno = 0;
+                    this.setTurno(0);
                     shouldBreak = true;
                 }
 
@@ -447,11 +451,12 @@ public class ModelNavalBatlle {
                         setChange(false);
                         System.out.println(hitsUser);
                         status = 2;
-                        turno = 0;
+                        this.setTurno(0);
                         shouldBreak = true;
                     }else {
                         System.out.println("golpeo pero no se hundio");
                         status = 1;
+                        this.setTurno(1);
                         this.setLastMove(checkX,checkY,orientation);
             }
             }else {
@@ -459,7 +464,7 @@ public class ModelNavalBatlle {
                 if(status==1){
                     shouldBreak = true;
                     setChange(true);
-                    turno = 0;
+                    this.setTurno(0);
 
                 }else {
                     status = 0;
@@ -508,7 +513,7 @@ public class ModelNavalBatlle {
                 String column = String.valueOf(lastCoordinate.charAt(2));
                 System.out.println("entro condicion 2 ");
                 System.out.println(this.getLastMove());
-                //hubo tiro y le dio golpe pero no lo hundio
+
             }else if(this.getMove()!="" && status==0){
                 posX = random.nextInt(9);
                 posY = random.nextInt(9);
@@ -559,6 +564,7 @@ public class ModelNavalBatlle {
         }while (turno==1);
         System.out.println(hitsUser);
         System.out.println(status);
+        System.out.println(turno);
         return hitsUser;
 
 
