@@ -286,8 +286,10 @@ public class ModelNavalBatlle {
 
         if(image=="/agua.png"){
             this.setTurno(1);
+            System.out.println("se dio");
         }else {
             this.setTurno(0);
+            System.out.println("no se dio");
         }
 
         ShipClass ship = checkSunken(zoneName);
@@ -296,6 +298,7 @@ public class ModelNavalBatlle {
             ShipClass shipTrue = getCoordinatesSunken(ship);
             if (shipTrue != null) {
                 this.setTurno(0);
+                System.out.println("logrado");
                 return shipTrue;
             } else {
                 if (waterZone.getName().equals(row + "," + column)) {
@@ -388,6 +391,7 @@ public class ModelNavalBatlle {
             if (!checkCoordinates(checkX, checkY, "user")) {
                 System.out.println(coordinates);
                 ShipClass ship = checkSunken(coordinates);
+                if(ship!=null){
                     if (getCoordinatesSunken(ship)!=null){
                         System.out.println("barco hundido");
                         System.out.println(hitsUser);
@@ -401,6 +405,7 @@ public class ModelNavalBatlle {
                         this.setLastMove(checkX,checkY,orientation);
                         this.setTurno(1);
                     }
+                }
             }else {
                 System.out.println("no golpeo");
                 if(status==1){
@@ -445,7 +450,7 @@ public class ModelNavalBatlle {
 
             if (!checkCoordinates(checkX, checkY, "user")) {
                 ShipClass ship = checkSunken(coordinates);
-                System.out.println(ship.getCoordinates());
+                if(ship!=null){
                     if (getCoordinatesSunken(ship)!=null) {
                         System.out.println("hundido");
                         setChange(false);
@@ -458,7 +463,8 @@ public class ModelNavalBatlle {
                         status = 1;
                         this.setTurno(1);
                         this.setLastMove(checkX,checkY,orientation);
-            }
+                    }
+                }
             }else {
                 System.out.println("no golpeo");
                 if(status==1){
